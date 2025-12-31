@@ -1,12 +1,61 @@
-# Autonops - https://autonops.io
-# Allow all search engines to crawl the site
-
-User-agent: *
-Allow: /
-
-# Sitemaps
+# Sitemap
 Sitemap: https://autonops.io/sitemap.xml
 Sitemap: https://autonops.io/docs/sitemap.xml
 
-# Block install page from indexing (it's for beta users only)
+# Allow standard search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block AI training crawlers
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+# Default: allow everything else
+User-agent: *
+Allow: /
+
+# Hidden pages
+User-agent: *
 Disallow: /install.html
