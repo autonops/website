@@ -119,6 +119,7 @@ nav:
     - License: about/license.md
 
 extra:
+  homepage: https://autonops.io
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/autonops/infraIQ
