@@ -1,0 +1,216 @@
+# Configuration
+
+InfraIQ can be configured through environment variables, configuration files, or command-line options.
+
+## Configuration File
+
+Create `~/.infraiq/config.yaml`:
+
+```yaml
+# Default cloud provider
+default_provider: aws
+
+# AWS settings
+aws:
+  region: us-east-1
+  profile: default
+
+# Heroku settings
+heroku:
+  team: my-team
+
+# Output preferences
+output:
+  format: json  # json, yaml, table
+  color: true
+  verbose: false
+
+# Telemetry
+telemetry:
+  enabled: true
+
+# Migration defaults
+migration:
+  target_provider: aws
+  include_monitoring: true
+  include_logging: true
+```
+
+## Environment Variables
+
+All settings can also be configured via environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `INFRAIQ_TELEMETRY` | Enable/disable telemetry | `true` |
+| `INFRAIQ_OUTPUT_FORMAT` | Output format (json/yaml/table) | `json` |
+| `INFRAIQ_VERBOSE` | Verbose output | `false` |
+| `INFRAIQ_CONFIG` | Path to config file | `~/.infraiq/config.yaml` |
+| `AWS_REGION` | Default AWS region | `us-east-1` |
+| `AWS_PROFILE` | AWS credentials profile | `default` |
+
+Example:
+
+```bash
+export INFRAIQ_TELEMETRY=false
+export INFRAIQ_OUTPUT_FORMAT=yaml
+export AWS_REGION=us-west-2
+```
+
+## Command-Line Options
+
+Most settings can be overridden per-command:
+
+```bash
+# Override output format
+infraiq verify scan --provider aws --format yaml
+
+# Override region
+infraiq codify scan aws --region eu-west-1
+
+# Enable verbose output
+infraiq migrate scan heroku --verbose
+```
+
+## Provider Configuration
+
+### AWS
+
+InfraIQ uses the standard AWS credential chain:
+
+1. Environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
+2. Shared credentials file (`~/.aws/credentials`)
+3. IAM role (when running on AWS)
+
+```bash
+# Option 1: Environment variables
+export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_REGION=us-east-1
+
+# Option 2: AWS CLI profile
+aws configure --profile infraiq
+export AWS_PROFILE=infraiq
+```
+
+### Heroku
+
+```bash
+# Login to Heroku
+heroku login
+
+# Or use API key
+export HEROKU_API_KEY=your-api-key
+```
+
+### Google Cloud
+
+```bash
+# Authenticate
+gcloud auth login
+gcloud auth application-default login
+
+# Set project
+gcloud config set project my-project-id
+```
+
+### Azure
+
+```bash
+# Login
+az login
+
+# Set subscription
+az account set --subscription "My Subscription"
+```
+
+## Tool-Specific Configuration
+
+### MigrateIQ
+
+```yaml
+# ~/.infraiq/config.yaml
+migration:
+  # Default target provider
+  target_provider: aws
+  
+  # Service mapping preferences
+  preferences:
+    web_dyno: ecs-fargate  # or app-runner, ec2
+    database: aurora       # or rds, none
+    cache: elasticache     # or none
+  
+  # Include optional components
+  include:
+    monitoring: true
+    logging: true
+    alerts: true
+    backups: true
+```
+
+### VerifyIQ
+
+```yaml
+verify:
+  # Severity threshold for failures
+  fail_on: high  # low, medium, high, critical
+  
+  # Scan categories
+  categories:
+    - security
+    - cost
+    - reliability
+    - compliance
+  
+  # Skip specific rules
+  skip_rules:
+    - AWS_S3_PUBLIC_READ
+```
+
+### ComplyIQ
+
+```yaml
+comply:
+  # Default framework
+  framework: soc2
+  
+  # Evidence storage
+  evidence:
+    bucket: my-compliance-bucket
+    prefix: evidence/
+  
+  # Notification on findings
+  notify:
+    email: security@company.com
+    slack_webhook: https://hooks.slack.com/...
+```
+
+### Tessera
+
+```yaml
+tessera:
+  # LLM provider for AI analysis
+  llm:
+    provider: openai  # openai, anthropic, bedrock
+    model: gpt-4
+  
+  # Decomposition preferences
+  decomposition:
+    pattern: hybrid  # domain, data, team, hybrid
+    min_services: 3
+    max_services: 10
+```
+
+## Precedence
+
+Configuration is applied in this order (later overrides earlier):
+
+1. Built-in defaults
+2. Config file (`~/.infraiq/config.yaml`)
+3. Environment variables
+4. Command-line options
+
+## Next Steps
+
+- [Tools Overview](../tools/overview.md) — Learn about all InfraIQ tools
+- [Quick Start](quickstart.md) — Run your first migration

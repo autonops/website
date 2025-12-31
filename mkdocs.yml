@@ -1,0 +1,129 @@
+site_name: InfraIQ Documentation
+site_url: https://autonops.io/docs/
+site_description: Complete documentation for InfraIQ - the DevOps automation platform
+site_author: Jason Boykin
+
+repo_name: autonops/infraIQ
+repo_url: https://github.com/autonops/infraIQ
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+  
+  icon:
+    repo: fontawesome/brands/github
+  
+  logo: assets/logo.svg
+  favicon: assets/favicon.ico
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: autonops
+      repo: infraIQ
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - Configuration: getting-started/configuration.md
+  - Tools:
+    - Overview: tools/overview.md
+    - MigrateIQ: tools/migrateiq.md
+    - VerifyIQ: tools/verifyiq.md
+    - CodifyIQ: tools/codifyiq.md
+    - ComplyIQ: tools/complyiq.md
+    - DataIQ: tools/dataiq.md
+    - SecureIQ: tools/secureiq.md
+    - Tessera: tools/tessera.md
+  - Guides:
+    - Heroku to AWS Migration: guides/heroku-to-aws.md
+    - SOC2 Compliance: guides/soc2-compliance.md
+    - Monolith Decomposition: guides/monolith-decomposition.md
+  - API Reference:
+    - CLI Reference: api/cli.md
+    - Python API: api/python.md
+  - About:
+    - Contributing: about/contributing.md
+    - Changelog: about/changelog.md
+    - License: about/license.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/autonops/infraIQ
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/JasonBoykin2018
+  generator: false
+
+copyright: Copyright &copy; 2025 Autonops

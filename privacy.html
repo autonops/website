@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Autonops</title>
+    <meta name="description" content="InfraIQ privacy policy. Learn what data we collect and how we protect your privacy.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (systemDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --card-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --text: #f9fafb;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --bg-alt: #1f2937;
+            --border: #374151;
+            --success: #10b981;
+            --card-bg: #1f2937;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+        nav { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+        nav .container { max-width: 1100px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        nav a { color: var(--text-light); text-decoration: none; margin-left: 24px; font-size: 15px; }
+        nav a:hover { color: var(--primary); }
+        .theme-toggle {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover { background: var(--border); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: var(--text-light); }
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+        [data-theme="dark"] .sun-icon { display: block; }
+        [data-theme="dark"] .moon-icon { display: none; }
+        main { padding: 60px 0; }
+        h1 { font-size: 36px; margin-bottom: 16px; }
+        .subtitle { font-size: 18px; color: var(--text-light); margin-bottom: 48px; }
+        h2 { font-size: 24px; margin-top: 48px; margin-bottom: 16px; padding-top: 32px; border-top: 1px solid var(--border); }
+        h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+        h3 { font-size: 18px; margin-top: 32px; margin-bottom: 12px; }
+        p { margin-bottom: 16px; }
+        ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 12px; }
+        .highlight-box {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .highlight-box h3 { margin-top: 0; color: var(--success); }
+        table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+        th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-alt); font-weight: 600; }
+        code { background: var(--bg-alt); padding: 2px 6px; border-radius: 4px; font-family: 'SF Mono', Monaco, monospace; font-size: 14px; }
+        a { color: var(--primary); }
+        footer { padding: 40px 0; border-top: 1px solid var(--border); margin-top: 60px; background: var(--bg); }
+        footer .container { max-width: 1100px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-links a { color: var(--text-light); text-decoration: none; margin-left: 24px; font-size: 14px; }
+        .footer-links a:hover { color: var(--primary); }
+        .footer-copy { color: var(--text-light); font-size: 14px; }
+        @media (max-width: 768px) {
+            nav .container { flex-direction: column; gap: 16px; }
+            nav a { margin-left: 16px; }
+            .theme-toggle { margin-left: 16px; }
+            table { font-size: 14px; }
+            th, td { padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">auton<span>ops</span></a>
+            <div class="nav-links">
+                <a href="/#product">Product</a>
+                <a href="/#background">About</a>
+                <a href="/docs/">Docs</a>
+                <a href="/#signup">Join Beta</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"></line><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"></line><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h1>Privacy Policy</h1>
+            <p class="subtitle">How we collect, use, and protect your information.</p>
+
+            <div class="highlight-box">
+                <h3>🛡️ Privacy First</h3>
+                <p style="margin-bottom: 0;">InfraIQ is designed with privacy at its core. The CLI runs locally on your machine, and we don't have access to your infrastructure, credentials, or data. The only information we receive is anonymous usage telemetry — and that's optional.</p>
+            </div>
+
+            <h2>Information We Collect</h2>
+            
+            <h3>Website (autonops.io)</h3>
+            <p>When you visit our website, we collect:</p>
+            <ul>
+                <li><strong>Analytics data</strong> — Page views, browser type, country (via Cloudflare Web Analytics, no cookies)</li>
+                <li><strong>Beta signup information</strong> — Name, work email, company, and use case (when you submit the form)</li>
+            </ul>
+            <p>We do not use cookies for tracking. Cloudflare Web Analytics is privacy-focused and doesn't use cookies or track individual users.</p>
+
+            <h3>InfraIQ CLI</h3>
+            <p>When you use the InfraIQ command-line tool, we collect anonymous telemetry (opt-out available):</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Collected</th>
+                        <th>Not Collected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Command names (e.g., "migrate scan")</td>
+                        <td>Cloud credentials or tokens</td>
+                    </tr>
+                    <tr>
+                        <td>Success/failure status</td>
+                        <td>Resource names or IDs</td>
+                    </tr>
+                    <tr>
+                        <td>Execution duration</td>
+                        <td>Configuration data</td>
+                    </tr>
+                    <tr>
+                        <td>Tool version</td>
+                        <td>Environment variables</td>
+                    </tr>
+                    <tr>
+                        <td>Operating system type</td>
+                        <td>IP addresses</td>
+                    </tr>
+                    <tr>
+                        <td>Anonymous session ID</td>
+                        <td>Personal information</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>How We Use Information</h2>
+            <ul>
+                <li><strong>Beta signups</strong> — To contact you about InfraIQ, provide onboarding support, and send product updates</li>
+                <li><strong>Telemetry</strong> — To understand which features are used, identify bugs, and improve the product</li>
+                <li><strong>Analytics</strong> — To understand website traffic and improve content</li>
+            </ul>
+
+            <h2>Opting Out of Telemetry</h2>
+            <p>CLI telemetry is optional. To disable it, set an environment variable:</p>
+            <p><code>export INFRAIQ_TELEMETRY=false</code></p>
+            <p>Add this to your shell profile (<code>~/.bashrc</code> or <code>~/.zshrc</code>) to make it permanent.</p>
+
+            <h2>Data Storage and Security</h2>
+            <ul>
+                <li><strong>Beta signup data</strong> — Stored securely via Formspree, accessed only by Autonops</li>
+                <li><strong>Telemetry data</strong> — Stored in our infrastructure (GCP), retained for 12 months</li>
+                <li><strong>Your infrastructure data</strong> — Never transmitted to us; stays on your machine</li>
+            </ul>
+
+            <h2>Data Sharing</h2>
+            <p>We do not sell your data. We may share data with:</p>
+            <ul>
+                <li><strong>Service providers</strong> — Formspree (form handling), Cloudflare (website hosting/analytics), GCP (telemetry storage)</li>
+                <li><strong>Legal requirements</strong> — If required by law</li>
+            </ul>
+
+            <h2>Your Rights</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li><strong>Access</strong> — Request a copy of data we have about you</li>
+                <li><strong>Deletion</strong> — Request deletion of your data</li>
+                <li><strong>Opt out</strong> — Disable telemetry at any time</li>
+                <li><strong>Correction</strong> — Request correction of inaccurate data</li>
+            </ul>
+            <p>To exercise these rights, email <a href="/cdn-cgi/l/email-protection#3b515a4854557b5a4e4f5455544b48155254"><span class="__cf_email__" data-cfemail="caa0abb9a5a48aabbfbea5a4a5bab9e4a3a5">[email&#160;protected]</span></a>.</p>
+
+            <h2>GDPR Compliance</h2>
+            <p>For users in the European Economic Area:</p>
+            <ul>
+                <li>We process data based on legitimate interest (improving our product) and consent (beta signup)</li>
+                <li>Telemetry is anonymized and doesn't contain personal data</li>
+                <li>You can opt out of telemetry at any time</li>
+                <li>No data is transferred outside secure infrastructure</li>
+            </ul>
+
+            <h2>California Privacy Rights (CCPA)</h2>
+            <p>California residents have the right to:</p>
+            <ul>
+                <li>Know what personal information is collected</li>
+                <li>Request deletion of personal information</li>
+                <li>Opt out of the sale of personal information (we don't sell data)</li>
+            </ul>
+
+            <h2>Children's Privacy</h2>
+            <p>InfraIQ is not intended for use by children under 16. We do not knowingly collect information from children.</p>
+
+            <h2>Changes to This Policy</h2>
+            <p>We may update this policy from time to time. We'll notify users of significant changes via email or website notice.</p>
+
+            <h2>Contact Us</h2>
+            <p>Questions about privacy? Contact us:</p>
+            <p>📧 <a href="/cdn-cgi/l/email-protection#f19b90829e9fb19084859e9f9e8182df989e"><span class="__cf_email__" data-cfemail="f79d96849899b79682839899988784d99e98">[email&#160;protected]</span></a></p>
+
+            <p style="margin-top: 32px; color: var(--text-light); font-size: 14px;"><em>Last updated: December 2025</em></p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-copy">© 2025 Autonops. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/security.html">Security</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <a href="/cdn-cgi/l/email-protection#d8b2b9abb7b698b9adacb7b6b7a8abf6b1b7">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/

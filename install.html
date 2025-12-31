@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install InfraIQ - Autonops</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+            --code-bg: #1f2937;
+            --code-text: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --text: #f9fafb;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --bg-alt: #1f2937;
+            --border: #374151;
+            --code-bg: #0d1117;
+            --code-text: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-light);
+        }
+
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+
+        [data-theme="dark"] .sun-icon { display: block; }
+        [data-theme="dark"] .moon-icon { display: none; }
+
+        /* Main Content */
+        main {
+            padding: 60px 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+
+        .beta-notice {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 40px;
+        }
+
+        [data-theme="dark"] .beta-notice {
+            background: #451a03;
+            border-color: #b45309;
+        }
+
+        .beta-notice p {
+            color: #92400e;
+            font-size: 14px;
+        }
+
+        [data-theme="dark"] .beta-notice p {
+            color: #fcd34d;
+        }
+
+        .beta-notice a {
+            color: #b45309;
+        }
+
+        [data-theme="dark"] .beta-notice a {
+            color: #fbbf24;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0 24px;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: var(--code-text);
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #6b7280;
+        }
+
+        /* Inline code */
+        code {
+            background: var(--bg-alt);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Lists */
+        ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        /* Links */
+        a {
+            color: var(--primary);
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            background: var(--bg);
+        }
+
+        footer p {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* Copy Button */
+        .code-wrapper {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #374151;
+            color: #e5e7eb;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #4b5563;
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">auton<span>ops</span></a>
+            <div class="nav-right">
+                <a href="/docs/">Docs</a>
+                <a href="/">← Back to Home</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"></line><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"></line><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h1>Install InfraIQ</h1>
+            
+            <div class="beta-notice">
+                <p><strong>Beta Access:</strong> Thanks for joining the InfraIQ beta! This page contains installation instructions. If you have questions, reach out to <a href="/cdn-cgi/l/email-protection#92f8f3e1fdfcd2f3e7e6fdfcfde2e1bcfbfd"><span class="__cf_email__" data-cfemail="6903081a060729081c1d060706191a470006">[email&#160;protected]</span></a>.</p>
+            </div>
+
+            <h2>Quick Install</h2>
+            <p>Run this command in your terminal:</p>
+            
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code>curl -sSL https://install.autonops.io | bash</code>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this, 'curl -sSL https://install.autonops.io | bash')">Copy</button>
+            </div>
+
+            <h2>Prerequisites</h2>
+            <ul>
+                <li><strong>Python 3.9+</strong> — Check with <code>python3 --version</code></li>
+                <li><strong>pip</strong> — Usually included with Python</li>
+                <li><strong>Cloud credentials</strong> — AWS, GCP, Heroku, or Azure CLI configured</li>
+                <li><strong>Terraform 1.0+</strong> — For applying generated configurations</li>
+            </ul>
+
+            <h2>Verify Installation</h2>
+            <p>After installation, verify everything is working:</p>
+            
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code><span class="comment"># Check installation</span>
+infraiq --version
+
+<span class="comment"># Run diagnostics</span>
+infraiq doctor
+
+<span class="comment"># See all available tools</span>
+infraiq info</code>
+                </div>
+            </div>
+
+            <h2>Quick Start Examples</h2>
+            
+            <h3>Migrate from Heroku to AWS</h3>
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code><span class="comment"># Scan your Heroku app</span>
+infraiq migrate scan heroku --app-name my-app
+
+<span class="comment"># Map to AWS services</span>
+infraiq migrate map scan.json aws
+
+<span class="comment"># Generate Terraform</span>
+infraiq migrate generate migration-plan.json --output terraform/</code>
+                </div>
+            </div>
+
+            <h3>Verify Infrastructure Security</h3>
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code><span class="comment"># Quick security scan</span>
+infraiq verify scan --provider aws --output report.json
+
+<span class="comment"># Analyze results</span>
+infraiq verify analyze report.json</code>
+                </div>
+            </div>
+
+            <h3>Codify Existing Infrastructure</h3>
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code><span class="comment"># Discover AWS resources</span>
+infraiq codify scan aws --region us-east-1 -o scan.json
+
+<span class="comment"># Generate Terraform</span>
+infraiq codify generate scan.json --output ./terraform</code>
+                </div>
+            </div>
+
+            <h2>All Available Tools</h2>
+            <ul>
+                <li><strong>MigrateIQ</strong> — Cloud-to-cloud migration automation</li>
+                <li><strong>VerifyIQ</strong> — Security scanning and drift detection</li>
+                <li><strong>CodifyIQ</strong> — Convert existing infrastructure to IaC</li>
+                <li><strong>ComplyIQ</strong> — SOC2, HIPAA, ISO27001 compliance</li>
+                <li><strong>DataIQ</strong> — Zero-downtime database migrations</li>
+                <li><strong>SecureIQ</strong> — Secret discovery and management</li>
+                <li><strong>Tessera</strong> — AI-powered monolith decomposition</li>
+            </ul>
+
+            <h2>Get Help</h2>
+            <ul>
+                <li><strong>Documentation:</strong> <a href="/docs/">autonops.io/docs</a></li>
+                <li><strong>GitHub:</strong> <a href="https://github.com/autonops/infraIQ" target="_blank">github.com/autonops/infraIQ</a></li>
+                <li><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection#ef858e9c8081af8e9a9b8081809f9cc18680"><span class="__cf_email__" data-cfemail="aac0cbd9c5c4eacbdfdec5c4c5dad984c3c5">[email&#160;protected]</span></a></li>
+                <li><strong>Any command:</strong> Add <code>--help</code> for usage details</li>
+            </ul>
+
+            <h2>Telemetry</h2>
+            <p>
+                InfraIQ collects anonymous usage data to improve the product. No credentials or personal information are collected. To opt out:
+            </p>
+            <div class="code-wrapper">
+                <div class="code-block">
+                    <code>export INFRAIQ_TELEMETRY=false</code>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Questions? Contact <a href="/cdn-cgi/l/email-protection#f49e95879b9ab49581809b9a9b8487da9d9b"><span class="__cf_email__" data-cfemail="1973786a767759786c6d767776696a377076">[email&#160;protected]</span></a></p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function copyCode(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem(

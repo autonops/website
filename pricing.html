@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - InfraIQ by Autonops</title>
+    <meta name="description" content="InfraIQ pricing plans. DevOps automation for startups to enterprise.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (systemDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --card-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --text: #f9fafb;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --bg-alt: #1f2937;
+            --border: #374151;
+            --success: #10b981;
+            --card-bg: #1f2937;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Navigation */
+        nav { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--text); text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        nav a { color: var(--text-light); text-decoration: none; margin-left: 24px; font-size: 15px; }
+        nav a:hover { color: var(--primary); }
+        .theme-toggle {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-toggle:hover { background: var(--border); }
+        .theme-toggle svg { width: 20px; height: 20px; fill: var(--text-light); }
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+        [data-theme="dark"] .sun-icon { display: block; }
+        [data-theme="dark"] .moon-icon { display: none; }
+
+        /* Hero */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin: 40px 0;
+        }
+        .billing-toggle span {
+            font-size: 15px;
+            color: var(--text-light);
+        }
+        .billing-toggle span.active {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .toggle-switch {
+            width: 56px;
+            height: 28px;
+            background: var(--border);
+            border-radius: 14px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+        }
+        .toggle-switch.active::after {
+            transform: translateX(28px);
+        }
+        .save-badge {
+            background: var(--success);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Pricing Cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+        .pricing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+        }
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.02);
+        }
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .pricing-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .pricing-card .description {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        .price {
+            margin-bottom: 24px;
+        }
+        .price .amount {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        .price .period {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+        .price .annual-note {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: background 0.2s;
+        }
+        .cta-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .cta-primary:hover {
+            background: var(--primary-dark);
+        }
+        .cta-secondary {
+            background: var(--bg-alt);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .cta-secondary:hover {
+            background: var(--border);
+        }
+        .features-list {
+            list-style: none;
+        }
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+        }
+        .features-list li.disabled {
+            color: var(--text-light);
+        }
+        .features-list li.disabled::before {
+            content: '—';
+            color: var(--text-light);
+        }
+
+        /* Value Comparison */
+        .value-section {
+            padding: 80px 0;
+            background: var(--bg-alt);
+        }
+        .value-section h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .value-section .subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 48px;
+            font-size: 18px;
+        }
+        .comparison-table {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+        .comparison-row.header {
+            background: var(--bg-alt);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+        }
+        .comparison-row .alternative {
+            flex: 1;
+        }
+        .comparison-row .cost {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        .comparison-row.highlight {
+            background: var(--primary);
+            color: white;
+        }
+        .comparison-row.highlight .cost {
+            color: white;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 80px 0;
+        }
+        .faq-section h2 {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .faq-item h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .faq-item p {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: var(--bg-alt);
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+        .cta-section a {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .cta-section a:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Footer */
+        footer { padding: 40px 0; border-top: 1px solid var(--border); background: var(--bg); }
+        footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-links a { color: var(--text-light); text-decoration: none; margin-left: 24px; font-size: 14px; }
+        .footer-links a:hover { color: var(--primary); }
+        .footer-copy { color: var(--text-light); font-size: 14px; }
+
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto 80px;
+            }
+            .pricing-card.featured {
+                transform: none;
+            }
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            nav .container { flex-direction: column; gap: 16px; }
+            nav a { margin-left: 16px; }
+            .theme-toggle { margin-left: 16px; }
+            .hero h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">auton<span>ops</span></a>
+            <div class="nav-links">
+                <a href="/#product">Product</a>
+                <a href="/#background">About</a>
+                <a href="/docs/">Docs</a>
+                <a href="/pricing.html">Pricing</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"></line><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"></line><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Simple, transparent pricing</h1>
+            <p>Start free, upgrade when you're ready. No hidden fees, no surprises.</p>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <div class="container">
+            <div class="billing-toggle">
+                <span class="monthly-label active">Monthly</span>
+                <div class="toggle-switch" onclick="toggleBilling()"></div>
+                <span class="annual-label">Annual</span>
+                <span class="save-badge">Save 20%</span>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Free Tier -->
+                <div class="pricing-card">
+                    <h3>Free</h3>
+                    <p class="description">Get started and see the value</p>
+                    <div class="price">
+                        <span class="amount">$0</span>
+                        <span class="period">/month</span>
+                    </div>
+                    <a href="/#signup" class="cta-button cta-secondary">Get Started</a>
+                    <ul class="features-list">
+                        <li>VerifyIQ — scan only</li>
+                        <li>MigrateIQ — scan only</li>
+                        <li>See what needs to migrate</li>
+                        <li>Security vulnerability reports</li>
+                        <li>Community support</li>
+                        <li class="disabled">Generate Terraform</li>
+                        <li class="disabled">Execute migrations</li>
+                        <li class="disabled">Compliance tools</li>
+                    </ul>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Pro</h3>
+                    <p class="description">Full migration and compliance toolkit</p>
+                    <div class="price">
+                        <span class="amount monthly-price">$499</span>
+                        <span class="amount annual-price" style="display: none;">$399</span>
+                        <span class="period">/month</span>
+                        <div class="annual-note annual-only" style="display: none;">Billed annually ($4,788/year)</div>
+                    </div>
+                    <a href="/#signup" class="cta-button cta-primary">Start Free Trial</a>
+                    <ul class="features-list">
+                        <li>MigrateIQ — full access</li>
+                        <li>VerifyIQ — full access</li>
+                        <li>CodifyIQ — full access</li>
+                        <li>ComplyIQ — full access</li>
+                        <li>Generate production Terraform</li>
+                        <li>SOC2 evidence collection</li>
+                        <li>Email support</li>
+                        <li class="disabled">Database migrations</li>
+                        <li class="disabled">AI-powered decomposition</li>
+                    </ul>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <p class="description">Complete platform with all 7 tools</p>
+                    <div class="price">
+                        <span class="amount monthly-price">$2,499</span>
+                        <span class="amount annual-price" style="display: none;">$1,999</span>
+                        <span class="period">/month</span>
+                        <div class="annual-note annual-only" style="display: none;">Billed annually ($23,988/year)</div>
+                    </div>
+                    <a href="/cdn-cgi/l/email-protection#244e45574b4a644551504b4a4b54570a4d4b1b5751464e414750196d4a4256456d7504614a50415654564d5741" class="cta-button cta-secondary">Contact Sales</a>
+                    <ul class="features-list">
+                        <li>Everything in Pro, plus:</li>
+                        <li>DataIQ — zero-downtime DB migrations</li>
+                        <li>SecureIQ — secret discovery</li>
+                        <li>Tessera — AI monolith decomposition</li>
+                        <li>Priority support</li>
+                        <li>SSO / SAML</li>
+                        <li>Dedicated onboarding</li>
+                        <li>Custom integrations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="value-section">
+        <div class="container">
+            <h2>Why InfraIQ pays for itself</h2>
+            <p class="subtitle">Compare the cost of alternatives</p>
+            
+            <div class="comparison-table">
+                <div class="comparison-row header">
+                    <span class="alternative">Alternative</span>
+                    <span class="cost">Typical Cost</span>
+                </div>
+                <div class="comparison-row">
+                    <span class="alternative">Senior DevOps engineer</span>
+                    <span class="cost">$150-250K/year</span>
+                </div>
+                <div class="comparison-row">
+                    <span class="alternative">Migration consultant</span>
+                    <span class="cost">$200-400/hour</span>
+                </div>
+                <div class="comparison-row">
+                    <span class="alternative">SOC2 compliance tools (Vanta, Drata)</span>
+                    <span class="cost">$10-30K/year</span>
+                </div>
+                <div class="comparison-row">
+                    <span class="alternative">Heroku migration agency</span>
+                    <span class="cost">$25-100K/project</span>
+                </div>
+                <div class="comparison-row highlight">
+                    <span class="alternative">InfraIQ Pro</span>
+                    <span class="cost">$4,788/year</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently asked questions</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>What's included in the free trial?</h4>
+                    <p>You get full access to Pro features for 30 days. No credit card required. After the trial, you can continue with the free tier or upgrade.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I switch plans later?</h4>
+                    <p>Yes, upgrade or downgrade anytime. When upgrading, you'll be prorated. When downgrading, changes take effect at the next billing cycle.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Do you offer refunds?</h4>
+                    <p>Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, contact us for a full refund.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Is my data secure?</h4>
+                    <p>InfraIQ runs locally on your machine. Your credentials, infrastructure data, and configurations never leave your environment. See our <a href="/security.html">security page</a> for details.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>What payment methods do you accept?</h4>
+                    <p>We accept all major credit cards. For Enterprise annual contracts, we also accept wire transfers and invoicing.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Do you offer startup discounts?</h4>
+                    <p>Yes! Early-stage startups may qualify for extended trials or discounted rates. Contact us to learn more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to automate your DevOps?</h2>
+            <p>Start your free trial today. No credit card required.</p>
+            <a href="/#signup">Get Started Free</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-copy">© 2025 Autonops. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/security.html">Security</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <a href="/cdn-cgi/l/email-protection#432922302c2d032236372c2d2c33306d2a2c">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        let isAnnual = false;
+
+        function toggleBilling() {
+            isAnnual = !isAnnual;
+            
+            const toggle = document.querySelector('.toggle-switch');
+            const monthlyLabel = document.querySelector('.monthly-label');
+            const annualLabel = document.querySelector('.annual-label');
+            const monthlyPrices = document.querySelectorAll('.monthly-price');
+            const annualPrices = document.querySelectorAll('.annual-price');
+            const annualNotes = document.querySelectorAll('.annual-only');
+            
+            toggle.classList.toggle('active', isAnnual);
+            monthlyLabel.classList.toggle('active', !isAnnual);
+            annualLabel.classList.toggle('active', isAnnual);
+            
+            monthlyPrices.forEach(el => el.style.display = isAnnual ? 'none' : 'inline');
+            annualPrices.forEach(el => el.style.display = isAnnual ? 'inline' : 'none');
+            annualNotes.forEach(el => el.style.display = isAnnual ? 'block' : 'none');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+      

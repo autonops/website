@@ -1,0 +1,12 @@
+# Autonops - https://autonops.io
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://autonops.io/sitemap.xml
+Sitemap: https://autonops.io/docs/sitemap.xml
+
+# Block install page from indexing (it's for beta users only)
+Disallow: /install.html

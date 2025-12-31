@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonops - Migration as a Service</title>
+    <meta name="description" content="InfraIQ: DevOps automation platform. Migrate from Heroku to AWS in hours, not months. Free beta available.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <script>
+        // Run immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (systemDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --text: #f9fafb;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --bg-alt: #1f2937;
+            --border: #374151;
+            --success: #10b981;
+            --card-bg: #1f2937;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-light);
+        }
+
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+
+        [data-theme="dark"] .sun-icon { display: block; }
+        [data-theme="dark"] .moon-icon { display: none; }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .beta-badge {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero .tagline {
+            font-size: 24px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Product Section */
+        .product {
+            padding: 80px 0;
+            background: var(--bg-alt);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 64px;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .tool-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-card p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Background Section */
+        .background {
+            padding: 80px 0;
+            background: var(--bg);
+        }
+
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .credential {
+            text-align: center;
+            padding: 32px 24px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card-bg);
+        }
+
+        .credential-company {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .credential-stat {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .credential-role {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Signup Section */
+        .signup {
+            padding: 80px 0;
+            background: var(--bg-alt);
+        }
+
+        .signup-box {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .signup-box h2 {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .signup-box .beta-note {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-group label span {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copy {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero .tagline {
+                font-size: 20px;
+            }
+
+            .stats {
+                gap: 32px;
+            }
+
+            .stat-value {
+                font-size: 36px;
+            }
+
+            nav .container {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            nav a {
+                margin-left: 16px;
+            }
+
+            .theme-toggle {
+                margin-left: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">auton<span>ops</span></a>
+            <div class="nav-links">
+                <a href="#product">Product</a>
+                <a href="#background">About</a>
+                <a href="/docs/">Docs</a>
+                <a href="#signup">Join Beta</a>
+                <a href="/pricing.html">Pricing</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"></line><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"></line><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="beta-badge">🚀 Free Beta — Q1 2026</div>
+            <h1>InfraIQ</h1>
+            <p class="tagline">Migration as a Service</p>
+            <p>
+                Migrate from Heroku to AWS in hours, not months. 
+                A complete DevOps automation platform built from real-world experience 
+                scaling infrastructure at Spotify, Capital One, and Point Digital Finance.
+            </p>
+            <a href="#signup" class="cta-button">Join the Beta</a>
+        </div>
+    </section>
+
+    <section class="product" id="product">
+        <div class="container">
+            <h2 class="section-title">What We Do</h2>
+            <p class="section-subtitle">
+                InfraIQ automates the painful parts of DevOps so your team can focus on building product. 
+                Seven production-ready tools that work together or standalone.
+            </p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">98%</div>
+                    <div class="stat-label">Time Savings</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">Weeks → Hours</div>
+                    <div class="stat-label">Migration Time</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Integrated Tools</div>
+                </div>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>🚀 MigrateIQ</h3>
+                    <p>Automated cloud migration from Heroku, AWS, GCP, or Azure. Generate production-ready Terraform with intelligent service mapping.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>🔍 VerifyIQ</h3>
+                    <p>Infrastructure verification and validation. Security scanning, cost optimization, and drift detection.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>📝 CodifyIQ</h3>
+                    <p>Transform existing cloud infrastructure into Infrastructure as Code. Convert ClickOps to GitOps.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>🔒 ComplyIQ</h3>
+                    <p>Continuous compliance automation. SOC2, ISO27001, HIPAA evidence collection and monitoring.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>🗄️ DataIQ</h3>
+                    <p>Zero-downtime database migrations with self-healing and automated cutover. PostgreSQL, MySQL, Oracle, MongoDB.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>🔑 SecureIQ</h3>
+                    <p>Secret discovery and management. Find, classify, and map all secrets before migration.</p>
+                </div>
+                <div class="tool-card">
+                    <h3>🎭 Tessera</h3>
+                    <p>AI-powered monolith to microservices transformation. Intelligent service boundary detection using LLMs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="background" id="background">
+        <div class="container">
+            <h2 class="section-title">Built by Engineers, for Engineers</h2>
+            <p class="section-subtitle">
+                InfraIQ codifies patterns proven at scale. Created by Jason Boykin, 
+                a Lead DevOps Engineer with experience across fintech, media, and government.
+            </p>
+
+            <div class="credentials">
+                <div class="credential">
+                    <div class="credential-company">Spotify</div>
+                    <div class="credential-stat">1.1B monthly downloads</div>
+                    <div class="credential-role">Led podcast infrastructure (87% of global podcasts)</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-company">Capital One</div>
+                    <div class="credential-stat">First 100% cloud bank</div>
+                    <div class="credential-role">Cloud Engineering, Chaos Engineering</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-company">Point Digital Finance</div>
+                    <div class="credential-stat">$4B fintech</div>
+                    <div class="credential-role">Lead DevOps, Heroku → AWS migration</div>
+                </div>
+                <div class="credential">
+                    <div class="credential-company">NSA / U.S. Army</div>
+                    <div class="credential-stat">DoD compliance</div>
+                    <div class="credential-role">Systems Engineering, Security Clearance</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="signup" id="signup">
+        <div class="container">
+            <div class="signup-box">
+                <h2>Join the Beta</h2>
+                <p class="beta-note">Free access through Q1 2026. We'll help you get started.</p>
+                
+                <form action="https://formspree.io/f/xdaoqglp" method="POST" onsubmit="return validateEmail()">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Work Email</label>
+                        <input type="email" name="email" id="email" required placeholder="you@company.com">
+                        <div id="email-error" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Company <span>(optional)</span></label>
+                        <input type="text" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label>What are you looking to solve? <span>(optional)</span></label>
+                        <textarea name="use_case" placeholder="e.g., Migrating from Heroku to AWS, SOC2 compliance, modernizing a monolith..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Request Beta Access</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-copy">© 2025 Autonops. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/security.html">Security</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
+                <a href="/cdn-cgi/l/email-protection#026863716d6c426377766d6c6d72712c6b6d"><span class="__cf_email__" data-cfemail="aac0cbd9c5c4eacbdfdec5c4c5dad984c3c5">[email&#160;protected]</span></a>
+                <a href="https://linkedin.com/in/JasonBoykin2018" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Personal email domains to block
+        const blockedDomains = [
+            'gmail.com', 'googlemail.com',
+            'yahoo.com', 'yahoo.co.uk', 'ymail.com',
+            'hotmail.com', 'hotmail.co.uk', 'outlook.com', 'live.com', 'msn.com',
+            'icloud.com', 'me.com', 'mac.com',
+            'aol.com',
+            'protonmail.com', 'proton.me',
+            'zoho.com',
+            'mail.com', 'email.com',
+            'gmx.com', 'gmx.net',
+            'yandex.com', 'yandex.ru',
+            'qq.com', '163.com', '126.com',
+            'tutanota.com',
+            'fastmail.com',
+            'hey.com'
+        ];
+
+        function validateEmail() {
+            const emailInput = document.getElementById('email');
+            const errorDiv = document.getElementById('email-error');
+            const email = emailInput.value.toLowerCase().trim();
+            
+            // Extract domain from email
+            const domain = email.split('@')[1];
+            
+            if (blockedDomains.includes(domain)) {
+                emailInput.classList.add('error');
+                errorDiv.textContent = 'Please use your work email address';
+                errorDiv.classList.add('show');
+                emailInput.focus();
+       
