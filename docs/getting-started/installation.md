@@ -1,8 +1,67 @@
 # Installation
 
-## Quick Install
+InfraIQ can be installed via Docker (recommended) or the install script.
 
-The fastest way to install InfraIQ:
+## Option 1: Docker (Recommended)
+
+Docker provides a consistent, isolated environment with no dependency conflicts.
+
+### Prerequisites
+
+- **Docker** — [Install Docker](https://docs.docker.com/get-docker/)
+
+### Install
+
+```bash
+# Pull the image
+docker pull autonops/infraiq:latest
+
+# Create persistent volume for configuration
+docker volume create infraiq-data
+```
+
+### Set Up Aliases
+
+Add to your `~/.zshrc` or `~/.bashrc`:
+
+```bash
+# InfraIQ Docker aliases
+alias infraiq='docker run --rm -v $(pwd):/workspace -v ~/.aws:/home/infraiq/.aws:ro -v infraiq-data:/home/infraiq/.infraiq autonops/infraiq'
+alias verify='infraiq verify'
+alias codify='infraiq codify'
+alias migrate='infraiq migrate'
+alias complyiq='infraiq complyiq'
+alias dataiq='infraiq dataiq'
+alias secureiq='infraiq secureiq'
+alias tessera='infraiq tessera'
+```
+
+Then reload your shell:
+
+```bash
+source ~/.zshrc  # or source ~/.bashrc
+```
+
+### Verify Installation
+
+```bash
+infraiq --help
+infraiq doctor
+infraiq info
+```
+
+---
+
+## Option 2: Install Script
+
+For beta users, the install script automates setup.
+
+### Prerequisites
+
+- **Python 3.9+** — Check with `python3 --version`
+- **Git** — For cloning the repository
+
+### Install
 
 ```bash
 curl -sSL https://install.autonops.io | bash
@@ -10,52 +69,17 @@ curl -sSL https://install.autonops.io | bash
 
 This script will:
 
-1. Check for Python 3.9+ 
-2. Install InfraIQ via pip
-3. Download the wraith-daemon for telemetry
+1. Check for Python 3.9+
+2. Clone the InfraIQ repository
+3. Set up a virtual environment
 4. Configure your PATH
+5. Download the telemetry daemon
 
-## Manual Installation
-
-### Prerequisites
-
-- **Python 3.9+** — Check with `python3 --version`
-- **pip** — Usually included with Python
-- **Git** — For cloning the repository
-
-### Using pip
+### Verify Installation
 
 ```bash
-pip install infraiq
-```
-
-### From Source
-
-```bash
-# Clone the repository
-git clone https://github.com/autonops/infraIQ.git
-cd infraIQ
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install in editable mode
-pip install -e .
-```
-
-## Verify Installation
-
-After installation, verify everything is working:
-
-```bash
-# Check version
 infraiq --version
-
-# Run diagnostics
 infraiq doctor
-
-# See all available tools
 infraiq info
 ```
 
@@ -76,6 +100,8 @@ Expected output from `infraiq info`:
   Tessera         ✅ Installed     - Microservices transformation
 ```
 
+---
+
 ## Cloud Provider Setup
 
 InfraIQ works with multiple cloud providers. Configure the ones you need:
@@ -85,12 +111,12 @@ InfraIQ works with multiple cloud providers. Configure the ones you need:
 ```bash
 # Install AWS CLI
 brew install awscli  # macOS
-# or
-pip install awscli
 
 # Configure credentials
 aws configure
 ```
+
+For Docker users, your `~/.aws` directory is automatically mounted read-only.
 
 ### Heroku
 
@@ -123,6 +149,8 @@ brew install azure-cli  # macOS
 az login
 ```
 
+---
+
 ## Terraform Setup
 
 InfraIQ generates Terraform configurations. Install Terraform to apply them:
@@ -135,6 +163,8 @@ brew install hashicorp/tap/terraform
 # Verify
 terraform --version
 ```
+
+---
 
 ## Telemetry
 
@@ -152,9 +182,33 @@ Or add to your shell profile (`~/.bashrc`, `~/.zshrc`):
 echo 'export INFRAIQ_TELEMETRY=false' >> ~/.zshrc
 ```
 
+---
+
 ## Troubleshooting
 
-### Python Version Issues
+### Docker: Permission Denied
+
+If you get permission errors with Docker:
+
+```bash
+# Ensure Docker daemon is running
+docker info
+
+# On Linux, add your user to the docker group
+sudo usermod -aG docker $USER
+# Then log out and back in
+```
+
+### Docker: AWS Credentials Not Found
+
+Ensure your `~/.aws` directory exists and contains valid credentials:
+
+```bash
+ls ~/.aws/credentials
+aws sts get-caller-identity  # Test credentials work
+```
+
+### Install Script: Python Version Issues
 
 If you see errors about Python version:
 
@@ -166,31 +220,19 @@ python3 --version
 brew install python@3.11  # macOS
 ```
 
-### Permission Errors
-
-If you get permission errors during installation:
-
-```bash
-# Use --user flag
-pip install --user infraiq
-
-# Or use a virtual environment (recommended)
-python3 -m venv venv
-source venv/bin/activate
-pip install infraiq
-```
-
 ### Command Not Found
 
 If `infraiq` command is not found after installation:
 
 ```bash
-# Check if installed
-pip show infraiq
+# For install script users, check your PATH
+echo $PATH | grep infraiq
 
-# Add to PATH (if using --user install)
-export PATH="$HOME/.local/bin:$PATH"
+# Reload your shell config
+source ~/.zshrc
 ```
+
+---
 
 ## Next Steps
 

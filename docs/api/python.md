@@ -4,9 +4,20 @@ Use InfraIQ programmatically in your Python applications.
 
 ## Installation
 
+The Python API is available when InfraIQ is installed via the install script:
+
 ```bash
-pip install infraiq
+curl -sSL https://install.autonops.io | bash
 ```
+
+Then activate the virtual environment to access the API:
+
+```bash
+source ~/.infraiq/venv/bin/activate
+```
+
+!!! note "Docker Users"
+    The Python API is not available when using the Docker distribution. Use the CLI commands instead, or install via the install script for programmatic access.
 
 ## Quick Start
 
