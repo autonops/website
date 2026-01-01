@@ -52,7 +52,38 @@ infraiq info
 
 ---
 
-## Option 2: Install Script
+## Option 2: Binary Download
+
+Download a standalone executable with zero dependencies.
+
+### Download
+
+| Platform | Download |
+|----------|----------|
+| macOS (Apple Silicon) | [infraiq-macos-arm64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-arm64.tar.gz) |
+| macOS (Intel) | [infraiq-macos-x64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-x64.tar.gz) |
+| Linux (x64) | [infraiq-linux-x64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-linux-x64.tar.gz) |
+| Linux (ARM64) | [infraiq-linux-arm64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-linux-arm64.tar.gz) |
+
+### Install
+
+```bash
+# Example: macOS Apple Silicon
+curl -LO https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-arm64.tar.gz
+tar -xzf infraiq-macos-arm64.tar.gz
+sudo mv infraiq /usr/local/bin/
+```
+
+### Verify Installation
+
+```bash
+infraiq --version
+infraiq --help
+```
+
+---
+
+## Option 3: Install Script
 
 For beta users, the install script automates setup.
 
