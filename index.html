@@ -470,6 +470,7 @@
                 <a href="#product">Product</a>
                 <a href="#background">About</a>
                 <a href="/docs/">Docs</a>
+                <a href="https://demo.autonops.io" target="_blank">Demo</a>
                 <a href="#signup">Join Beta</a>
                 <a href="/pricing.html">Pricing</a>
                 <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
@@ -659,4 +660,21 @@
                 errorDiv.textContent = 'Please use your work email address';
                 errorDiv.classList.add('show');
                 emailInput.focus();
-       
+                return false;
+            }
+            
+            emailInput.classList.remove('error');
+            errorDiv.classList.remove('show');
+            return true;
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
+</body>
+</html>
