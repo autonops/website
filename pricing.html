@@ -399,6 +399,7 @@
                 <a href="/#product">Product</a>
                 <a href="/#background">About</a>
                 <a href="/docs/">Docs</a>
+                <a href="https://demo.autonops.io" target="_blank">Demo</a>
                 <a href="/pricing.html">Pricing</a>
                 <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -458,7 +459,7 @@
                         <span class="period">/month</span>
                         <div class="annual-note annual-only" style="display: none;">Billed annually ($4,788/year)</div>
                     </div>
-                    <a href="/#signup" class="cta-button cta-primary">Start Free Trial</a>
+                    <a href="https://buy.stripe.com/test_dRm6oHdIjdqx0ih83gafS00" class="cta-button cta-primary">Start Free Trial</a>
                     <ul class="features-list">
                         <li>MigrateIQ — full access</li>
                         <li>VerifyIQ — full access</li>
@@ -482,7 +483,7 @@
                         <span class="period">/month</span>
                         <div class="annual-note annual-only" style="display: none;">Billed annually ($23,988/year)</div>
                     </div>
-                    <a href="/cdn-cgi/l/email-protection#244e45574b4a644551504b4a4b54570a4d4b1b5751464e414750196d4a4256456d7504614a50415654564d5741" class="cta-button cta-secondary">Contact Sales</a>
+                    <a href="mailto:sales@autonops.io" class="cta-button cta-secondary">Contact Sales</a>
                     <ul class="features-list">
                         <li>Everything in Pro, plus:</li>
                         <li>DataIQ — zero-downtime DB migrations</li>
@@ -580,12 +581,12 @@
                 <a href="/security.html">Security</a>
                 <a href="/privacy.html">Privacy</a>
                 <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
-                <a href="/cdn-cgi/l/email-protection#432922302c2d032236372c2d2c33306d2a2c">Contact</a>
+                <a href="mailto:contact@autonops.io">Contact</a>
             </div>
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         let isAnnual = false;
 
         function toggleBilling() {
@@ -610,4 +611,10 @@
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
-      
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    </script>
+</body>
+</html>
