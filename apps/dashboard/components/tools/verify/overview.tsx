@@ -1,123 +1,138 @@
-import { Card, Metric, Text, Flex, ProgressBar, Grid, DonutChart, BarChart } from '@tremor/react'
-import { Shield, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
+"use client";
 
-// Placeholder data - would come from API
-const securityScore = {
-  score: 84,
-  grade: 'B+',
-  change: '+5%',
+import {
+  Card,
+  Title,
+  Text,
+  Metric,
+  Flex,
+  ProgressBar,
+  Grid,
+  DonutChart,
+  AreaChart,
+  Badge,
+  Color,
+} from "@tremor/react";
+
+// Security score color based on value
+function getScoreColor(score: number): Color {
+  if (score >= 90) return "emerald";
+  if (score >= 70) return "yellow";
+  return "red";
 }
 
-const issuesBySeverity = [
-  { name: 'Critical', value: 2, color: 'red' },
-  { name: 'High', value: 8, color: 'orange' },
-  { name: 'Medium', value: 15, color: 'yellow' },
-  { name: 'Low', value: 23, color: 'blue' },
-]
+// Sample data - will be replaced with API data
+const severityData = [
+  { name: "Critical", value: 3 },
+  { name: "High", value: 12 },
+  { name: "Medium", value: 28 },
+  { name: "Low", value: 45 },
+];
 
-const resourcesByType = [
-  { name: 'EC2', count: 45 },
-  { name: 'S3', count: 28 },
-  { name: 'RDS', count: 12 },
-  { name: 'Lambda', count: 67 },
-  { name: 'IAM', count: 156 },
-]
+const trendData = [
+  { date: "Jan 1", score: 72 },
+  { date: "Jan 8", score: 75 },
+  { date: "Jan 15", score: 71 },
+  { date: "Jan 22", score: 78 },
+  { date: "Jan 29", score: 82 },
+  { date: "Feb 5", score: 85 },
+];
 
-export async function VerifyOverview() {
+const categoryScores = [
+  { name: "IAM & Access", score: 92 },
+  { name: "Network Security", score: 78 },
+  { name: "Data Protection", score: 85 },
+  { name: "Logging & Monitoring", score: 68 },
+  { name: "Compliance", score: 88 },
+];
+
+export function VerifyOverview() {
+  const overallScore = 85;
+
   return (
     <div className="space-y-6">
-      {/* Score Cards */}
-      <Grid numItems={1} numItemsSm={2} numItemsLg={4} className="gap-4">
-        <Card decoration="top" decorationColor="blue">
-          <Flex alignItems="start">
-            <div>
-              <Text>Security Score</Text>
-              <Metric>{securityScore.grade}</Metric>
-              <Text className="mt-1">{securityScore.score}/100</Text>
-            </div>
-            <Shield className="h-8 w-8 text-blue-500" />
-          </Flex>
-          <ProgressBar value={securityScore.score} color="blue" className="mt-4" />
-        </Card>
-        
-        <Card decoration="top" decorationColor="red">
-          <Flex alignItems="start">
-            <div>
-              <Text>Critical Issues</Text>
-              <Metric>2</Metric>
-              <Text className="mt-1">Need immediate attention</Text>
-            </div>
-            <AlertTriangle className="h-8 w-8 text-red-500" />
+      {/* Top Stats */}
+      <Grid numItemsMd={2} numItemsLg={4} className="gap-6">
+        <Card decoration="top" decorationColor={getScoreColor(overallScore)}>
+          <Text>Security Score</Text>
+          <Metric>{overallScore}/100</Metric>
+          <Flex className="mt-2">
+            <Text className="text-sm">+5 from last scan</Text>
+            <Badge color="emerald" size="sm">↑ 6%</Badge>
           </Flex>
         </Card>
         
-        <Card decoration="top" decorationColor="green">
-          <Flex alignItems="start">
-            <div>
-              <Text>Resources Scanned</Text>
-              <Metric>308</Metric>
-              <Text className="mt-1">Across 5 services</Text>
-            </div>
-            <CheckCircle className="h-8 w-8 text-green-500" />
-          </Flex>
+        <Card>
+          <Text>Total Resources</Text>
+          <Metric>1,247</Metric>
+          <Text className="text-sm mt-2">Across 3 regions</Text>
         </Card>
         
-        <Card decoration="top" decorationColor="gray">
-          <Flex alignItems="start">
-            <div>
-              <Text>Last Scan</Text>
-              <Metric>2h ago</Metric>
-              <Text className="mt-1">AWS us-east-1</Text>
-            </div>
-            <Clock className="h-8 w-8 text-gray-500" />
-          </Flex>
+        <Card>
+          <Text>Open Issues</Text>
+          <Metric>88</Metric>
+          <Text className="text-sm mt-2">15 critical, 28 high</Text>
+        </Card>
+        
+        <Card>
+          <Text>Last Scan</Text>
+          <Metric className="text-lg">2 hours ago</Metric>
+          <Text className="text-sm mt-2">Duration: 4m 32s</Text>
         </Card>
       </Grid>
-      
+
       {/* Charts Row */}
-      <Grid numItems={1} numItemsLg={2} className="gap-6">
+      <Grid numItemsMd={2} className="gap-6">
         {/* Issues by Severity */}
         <Card>
           <Title>Issues by Severity</Title>
           <Text>Distribution of found issues</Text>
           <DonutChart
             className="mt-6 h-52"
-            data={issuesBySeverity}
+            data={severityData}
             category="value"
             index="name"
-            colors={['red', 'orange', 'yellow', 'blue']}
+            colors={["red", "orange", "yellow", "slate"]}
             showAnimation
           />
         </Card>
-        
-        {/* Resources by Type */}
+
+        {/* Security Score Trend */}
         <Card>
-          <Title>Resources by Type</Title>
-          <Text>AWS resources scanned</Text>
-          <BarChart
+          <Title>Security Score Trend</Title>
+          <Text>Last 6 weeks</Text>
+          <AreaChart
             className="mt-6 h-52"
-            data={resourcesByType}
-            index="name"
-            categories={['count']}
-            colors={['blue']}
+            data={trendData}
+            index="date"
+            categories={["score"]}
+            colors={["blue"]}
             showAnimation
+            curveType="monotone"
           />
         </Card>
       </Grid>
-      
-      {/* Empty State - shown when no scans */}
-      {false && (
-        <Card className="text-center py-12">
-          <Shield className="h-12 w-12 text-[--text-light] mx-auto mb-4" />
-          <Title>No scans yet</Title>
-          <Text className="mt-2 mb-6">
-            Run your first security scan to see results here.
-          </Text>
-          <code className="text-sm bg-[--code-bg] text-[--code-text] px-4 py-2 rounded font-mono">
-            infraiq verify scan --provider aws --sync
-          </code>
-        </Card>
-      )}
+
+      {/* Category Breakdown */}
+      <Card>
+        <Title>Security by Category</Title>
+        <Text>Detailed breakdown of security posture</Text>
+        <div className="mt-6 space-y-4">
+          {categoryScores.map((category) => (
+            <div key={category.name}>
+              <Flex>
+                <Text>{category.name}</Text>
+                <Text>{category.score}%</Text>
+              </Flex>
+              <ProgressBar
+                value={category.score}
+                color={getScoreColor(category.score)}
+                className="mt-2"
+              />
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
-  )
+  );
 }
