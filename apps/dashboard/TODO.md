@@ -32,3 +32,26 @@ Authentication is currently disabled. Clerk was configured but had issues with:
 - [ ] Add `infraiq --sync` to push scan data to dashboard
 - [ ] Stripe integration for billing
 - [ ] Real data instead of mock data in dashboard
+
+## Auth Flow (Future)
+
+When ready to launch:
+
+1. **Sign up flow**
+   - "Join Beta" → Create account (email/password or OAuth)
+   - "Buy" on pricing → Create account + Stripe checkout
+
+2. **Protected routes**
+   - app.autonops.io/* requires authenticated user
+   - Redirect to sign-in if not logged in
+
+3. **Integration points**
+   - Stripe for payments
+   - License server (license.autonops.io) for key validation
+   - Dashboard shows user's license status
+
+4. **Options to consider**
+   - Clerk (already configured, needs debugging)
+   - NextAuth.js (simpler)
+   - Supabase Auth (if adding database)
+   - Custom JWT (full control)
