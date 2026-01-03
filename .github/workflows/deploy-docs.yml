@@ -6,27 +6,48 @@ on:
     paths:
       - 'apps/marketing/docs/**'
       - 'apps/marketing/mkdocs.yml'
+      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
+
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for gh-pages
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: apps/marketing/requirements.txt
 
       - name: Install Dependencies
         working-directory: apps/marketing
         run: pip install -r requirements.txt
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Build and Deploy
         working-directory: apps/marketing
         run: mkdocs gh-deploy --force
+
+      - name: Summary
+        run: |
+          echo "## 📚 Documentation Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://autonops.io/docs/" >> $GITHUB_STEP_SUMMARY

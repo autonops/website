@@ -6,10 +6,20 @@ on:
     paths:
       - 'apps/marketing/**'
       - 'packages/design-tokens/**'
-  workflow_dispatch:  # Allow manual trigger
+      - '.github/workflows/deploy-marketing.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-marketing
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   deploy:
+    name: Deploy to GCP
     runs-on: ubuntu-latest
     
     steps:
@@ -19,7 +29,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: 'projects/955610230725/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-actions@intense-grove-451422-s6.iam.gserviceaccount.com'
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -29,23 +40,32 @@ jobs:
       - name: Deploy to GCP Bucket
         run: |
           cd apps/marketing
-          gsutil -m cp -r \
+          
+          gsutil -m cp \
             index.html \
             pricing.html \
             security.html \
             privacy.html \
             install.html \
             404.html \
+            gs://autonops-website/
+          
+          gsutil -m cp \
             favicon.ico \
             favicon-16x16.png \
             favicon-32x32.png \
             apple-touch-icon.png \
-            robots.txt \
-            sitemap.xml \
             gs://autonops-website/
+          
+          gsutil cp robots.txt sitemap.xml gs://autonops-website/
 
       - name: Invalidate CDN Cache
         run: |
           gcloud compute url-maps invalidate-cdn-cache autonops-url-map \
             --path="/*" \
             --global
+
+      - name: Summary
+        run: |
+          echo "## 🚀 Marketing Site Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://autonops.io" >> $GITHUB_STEP_SUMMARY
