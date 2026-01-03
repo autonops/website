@@ -1,0 +1,416 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================================================================
+   Autonops Design System - CSS Variables
+   ==============================================================================
+   These match the existing autonops.io landing page for consistency.
+   ============================================================================== */
+
+@layer base {
+  :root {
+    /* Primary Colors */
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-foreground: #ffffff;
+    
+    /* Text Colors */
+    --text: #1f2937;
+    --text-light: #6b7280;
+    
+    /* Background Colors */
+    --bg: #ffffff;
+    --bg-alt: #f9fafb;
+    
+    /* Border Colors */
+    --border: #e5e7eb;
+    
+    /* Semantic Colors */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --destructive: #ef4444;
+    
+    /* Card Colors */
+    --card-bg: #ffffff;
+    
+    /* Code Colors */
+    --code-bg: #1f2937;
+    --code-text: #e5e7eb;
+    
+    /* Shadcn/ui compatibility */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  [data-theme="dark"] {
+    /* Primary Colors */
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --primary-foreground: #ffffff;
+    
+    /* Text Colors */
+    --text: #f9fafb;
+    --text-light: #9ca3af;
+    
+    /* Background Colors */
+    --bg: #111827;
+    --bg-alt: #1f2937;
+    
+    /* Border Colors */
+    --border: #374151;
+    
+    /* Card Colors */
+    --card-bg: #1f2937;
+    
+    /* Code Colors */
+    --code-bg: #0d1117;
+    --code-text: #e5e7eb;
+    
+    /* Shadcn/ui compatibility */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --ring: 216 34% 17%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "kern", "liga";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Smooth theme transitions */
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* ==============================================================================
+   Component Styles
+   ============================================================================== */
+
+@layer components {
+  /* Primary Button - matches autonops.io */
+  .btn-primary {
+    @apply inline-flex items-center justify-center;
+    @apply bg-[--primary] text-white;
+    @apply px-8 py-3.5 rounded-lg;
+    @apply font-semibold text-base;
+    @apply transition-colors duration-200;
+    @apply hover:bg-[--primary-dark];
+    @apply focus:outline-none focus:ring-2 focus:ring-[--primary] focus:ring-offset-2;
+  }
+  
+  /* Secondary Button */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center;
+    @apply bg-[--bg-alt] text-[--text];
+    @apply px-8 py-3.5 rounded-lg;
+    @apply font-semibold text-base;
+    @apply border border-[--border];
+    @apply transition-colors duration-200;
+    @apply hover:bg-[--border];
+    @apply focus:outline-none focus:ring-2 focus:ring-[--primary] focus:ring-offset-2;
+  }
+  
+  /* Card - matches autonops.io */
+  .card {
+    @apply bg-[--card-bg] rounded-xl;
+    @apply border border-[--border];
+    @apply p-8;
+    @apply transition-shadow duration-200;
+    @apply hover:shadow-card-hover;
+  }
+  
+  /* Badge - matches autonops.io beta badge */
+  .badge {
+    @apply inline-block;
+    @apply bg-[--success] text-white;
+    @apply px-3 py-1 rounded-full;
+    @apply text-sm font-semibold;
+  }
+  
+  .badge-warning {
+    @apply bg-[--warning];
+  }
+  
+  .badge-destructive {
+    @apply bg-[--destructive];
+  }
+  
+  /* Code block - matches autonops.io */
+  .code-block {
+    @apply bg-[--code-bg] rounded-lg;
+    @apply p-5;
+    @apply overflow-x-auto;
+  }
+  
+  .code-block code {
+    @apply text-[--code-text] font-mono text-sm;
+    @apply leading-relaxed;
+  }
+  
+  /* Section padding - matches autonops.io */
+  .section {
+    @apply py-20;
+  }
+  
+  /* Section with alt background */
+  .section-alt {
+    @apply py-20 bg-[--bg-alt];
+  }
+  
+  /* Section title - matches autonops.io */
+  .section-title {
+    @apply text-section text-center mb-4;
+  }
+  
+  /* Section subtitle */
+  .section-subtitle {
+    @apply text-lg text-[--text-light] text-center;
+    @apply max-w-2xl mx-auto mb-12;
+  }
+}
+
+/* ==============================================================================
+   Sidebar Styles
+   ============================================================================== */
+
+@layer components {
+  .sidebar {
+    @apply fixed left-0 top-0 h-screen;
+    @apply w-64 bg-[--bg] border-r border-[--border];
+    @apply flex flex-col;
+    @apply transition-transform duration-300;
+    @apply z-40;
+  }
+  
+  .sidebar-header {
+    @apply h-16 px-6;
+    @apply flex items-center;
+    @apply border-b border-[--border];
+  }
+  
+  .sidebar-nav {
+    @apply flex-1 overflow-y-auto;
+    @apply py-4;
+  }
+  
+  .sidebar-section {
+    @apply px-4 py-2;
+  }
+  
+  .sidebar-section-title {
+    @apply text-xs font-semibold uppercase tracking-wider;
+    @apply text-[--text-light] mb-2 px-2;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center gap-3;
+    @apply px-3 py-2 rounded-md;
+    @apply text-sm text-[--text-light];
+    @apply transition-colors duration-150;
+    @apply hover:bg-[--bg-alt] hover:text-[--text];
+  }
+  
+  .sidebar-link.active {
+    @apply bg-[--bg-alt] text-[--primary];
+    @apply font-medium;
+  }
+  
+  .sidebar-link-icon {
+    @apply w-5 h-5;
+  }
+}
+
+/* ==============================================================================
+   Dashboard Layout Styles
+   ============================================================================== */
+
+@layer components {
+  .dashboard-layout {
+    @apply min-h-screen bg-[--bg];
+  }
+  
+  .dashboard-main {
+    @apply ml-64; /* Offset for sidebar */
+    @apply min-h-screen;
+  }
+  
+  .dashboard-header {
+    @apply h-16 px-8;
+    @apply flex items-center justify-between;
+    @apply border-b border-[--border];
+    @apply bg-[--bg];
+    @apply sticky top-0 z-30;
+  }
+  
+  .dashboard-content {
+    @apply p-8;
+  }
+  
+  /* Responsive: hide sidebar on mobile */
+  @media (max-width: 768px) {
+    .sidebar {
+      @apply -translate-x-full;
+    }
+    
+    .sidebar.open {
+      @apply translate-x-0;
+    }
+    
+    .dashboard-main {
+      @apply ml-0;
+    }
+  }
+}
+
+/* ==============================================================================
+   Stat Cards (for dashboard)
+   ============================================================================== */
+
+@layer components {
+  .stat-card {
+    @apply bg-[--card-bg] rounded-xl;
+    @apply border border-[--border];
+    @apply p-6;
+  }
+  
+  .stat-value {
+    @apply text-3xl font-bold text-[--text];
+  }
+  
+  .stat-label {
+    @apply text-sm text-[--text-light] mt-1;
+  }
+  
+  .stat-change {
+    @apply text-sm mt-2;
+  }
+  
+  .stat-change.positive {
+    @apply text-[--success];
+  }
+  
+  .stat-change.negative {
+    @apply text-[--destructive];
+  }
+}
+
+/* ==============================================================================
+   Data Table Styles
+   ============================================================================== */
+
+@layer components {
+  .data-table {
+    @apply w-full;
+  }
+  
+  .data-table thead {
+    @apply border-b border-[--border];
+  }
+  
+  .data-table th {
+    @apply px-4 py-3 text-left;
+    @apply text-sm font-medium text-[--text-light];
+  }
+  
+  .data-table tbody tr {
+    @apply border-b border-[--border];
+    @apply transition-colors duration-150;
+    @apply hover:bg-[--bg-alt];
+  }
+  
+  .data-table td {
+    @apply px-4 py-4;
+    @apply text-sm text-[--text];
+  }
+}
+
+/* ==============================================================================
+   Logo Styles - matches autonops.io
+   ============================================================================== */
+
+@layer components {
+  .logo {
+    @apply text-2xl font-bold text-[--text];
+  }
+  
+  .logo-accent {
+    @apply text-[--primary];
+  }
+}
+
+/* ==============================================================================
+   Utility Classes
+   ============================================================================== */
+
+@layer utilities {
+  /* Text selection color */
+  ::selection {
+    @apply bg-[--primary] text-white;
+  }
+  
+  /* Custom scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-[--border] rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-[--text-light];
+  }
+}

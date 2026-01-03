@@ -1,0 +1,51 @@
+name: Deploy Marketing Site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/marketing/**'
+      - 'packages/design-tokens/**'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: intense-grove-451422-s6
+
+      - name: Deploy to GCP Bucket
+        run: |
+          cd apps/marketing
+          gsutil -m cp -r \
+            index.html \
+            pricing.html \
+            security.html \
+            privacy.html \
+            install.html \
+            404.html \
+            favicon.ico \
+            favicon-16x16.png \
+            favicon-32x32.png \
+            apple-touch-icon.png \
+            robots.txt \
+            sitemap.xml \
+            gs://autonops-website/
+
+      - name: Invalidate CDN Cache
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache autonops-url-map \
+            --path="/*" \
+            --global

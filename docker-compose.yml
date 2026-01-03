@@ -1,0 +1,79 @@
+version: '3.8'
+
+# Autonops Development Environment
+# Start everything: docker-compose up
+# Start specific service: docker-compose up dashboard
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: autonops-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: infraiq
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: autonops-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/infraiq
+      ENVIRONMENT: development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/api:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Next.js Dashboard
+  dashboard:
+    build:
+      context: ./apps/dashboard
+      dockerfile: Dockerfile.dev
+    container_name: autonops-dashboard
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/dashboard:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - api
+    command: npm run dev
+
+  # Marketing Site (optional, for preview)
+  marketing:
+    image: nginx:alpine
+    container_name: autonops-marketing
+    ports:
+      - "8080:80"
+    volumes:
+      - ./apps/marketing:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: autonops-network
