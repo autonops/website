@@ -1,10 +1,10 @@
-import { authMiddleware } from "@clerk/nextjs";
+// Temporarily disabled for debugging
+import { NextResponse } from 'next/server'
 
-export default authMiddleware({
-  publicRoutes: ["/", "/sign-in", "/sign-up", "/sign-in/(.*)", "/sign-up/(.*)"],
-  ignoredRoutes: ["/api/health"],
-});
+export function middleware() {
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
-};
+}
