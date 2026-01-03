@@ -1,16 +1,13 @@
-import { authMiddleware } from '@clerk/nextjs'
+// Temporarily disabled for testing
+// import { authMiddleware } from "@clerk/nextjs";
 
-export default authMiddleware({
-  // Public routes that don't require authentication
-  publicRoutes: [
-    '/',
-    '/sign-in(.*)',
-    '/sign-up(.*)',
-    '/api/webhooks(.*)',  // Webhooks need to be public
-    '/api/health',        // Health check endpoint
-  ],
-})
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  return NextResponse.next()
+}
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }
