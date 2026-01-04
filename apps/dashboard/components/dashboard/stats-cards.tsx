@@ -1,42 +1,58 @@
 import { Card, Metric, Text, Flex, BadgeDelta } from '@tremor/react'
 import { Shield, Server, CheckCircle, Rocket } from 'lucide-react'
+import { getDashboardStats, DashboardStats } from '@/lib/api'
 
-// This would normally fetch from the API
-// For now, using placeholder data
-const stats = [
-  {
-    name: 'Resources Monitored',
-    value: '847',
-    icon: Server,
-    change: '+12%',
-    changeType: 'increase' as const,
-  },
-  {
-    name: 'Security Score',
-    value: 'B+ (84%)',
-    icon: Shield,
-    change: '+5%',
-    changeType: 'increase' as const,
-  },
-  {
-    name: 'Compliance',
-    value: 'SOC2 ✓',
-    icon: CheckCircle,
-    change: 'Compliant',
-    changeType: 'unchanged' as const,
-  },
-  {
-    name: 'Active Migrations',
-    value: '2',
-    icon: Rocket,
-    change: 'In Progress',
-    changeType: 'unchanged' as const,
-  },
-]
+// Fallback data when API is unavailable
+const fallbackStats: DashboardStats = {
+  resources_monitored: 0,
+  security_score: 100,
+  security_grade: 'A',
+  compliance_status: [{ framework: 'SOC2', status: 'pending' }],
+  active_migrations: 0,
+  scans_this_week: 0,
+  issues_resolved: 0,
+}
 
 export async function StatsCards() {
-  // In a real app, fetch data here:
-  // const stats = await dashboardApi.stats()
+  let data: DashboardStats
+  
+  try {
+    data = await getDashboardStats()
+  } catch (error) {
+    console.error('Failed to fetch dashboard stats:', error)
+    data = fallbackStats
+  }
+  
+  const stats = [
+    {
+      name: 'Resources Monitored',
+      value: data.resources_monitored.toLocaleString(),
+      icon: Server,
+      change: `${data.scans_this_week} scans this week`,
+      changeType: data.scans_this_week > 0 ? 'increase' as const : 'unchanged' as const,
+    },
+    {
+      name: 'Security Score',
+      value: `${data.security_grade} (${data.security_score}%)`,
+      icon: Shield,
+      change: data.security_score >= 80 ? 'Good' : 'Needs attention',
+      changeType: data.security_score >= 80 ? 'increase' as const : 'decrease' as const,
+    },
+    {
+      name: 'Compliance',
+      value: data.compliance_status[0]?.framework || 'SOC2',
+      icon: CheckCircle,
+      change: data.compliance_status[0]?.status === 'compliant' ? 'Compliant' : 'Pending',
+      changeType: data.compliance_status[0]?.status === 'compliant' ? 'increase' as const : 'unchanged' as const,
+    },
+    {
+      name: 'Active Migrations',
+      value: data.active_migrations.toString(),
+      icon: Rocket,
+      change: data.active_migrations > 0 ? 'In Progress' : 'None active',
+      changeType: 'unchanged' as const,
+    },
+  ]
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
