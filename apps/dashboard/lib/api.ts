@@ -2,8 +2,13 @@
  * API Client for InfraIQ Backend
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.autonops.io'
-const API_KEY = process.env.INFRAIQ_BACKEND_API_KEY || ''
+function getApiKey(): string {
+  return process.env.INFRAIQ_BACKEND_API_KEY || ''
+}
+
+function getApiUrl(): string {
+  return process.env.NEXT_PUBLIC_API_URL || 'https://api.autonops.io'
+}
 
 interface FetchOptions extends RequestInit {
   skipAuth?: boolean
@@ -16,17 +21,23 @@ async function fetchAPI<T>(endpoint: string, options: FetchOptions = {}): Promis
     'Content-Type': 'application/json',
   }
   
-  if (!skipAuth && API_KEY) {
-    headers['X-API-Key'] = API_KEY
+  const apiKey = getApiKey()
+  if (!skipAuth && apiKey) {
+    headers['X-API-Key'] = apiKey
   }
   
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const url = `${getApiUrl()}${endpoint}`
+  console.log(`[API] Fetching ${url}, hasKey: ${!!apiKey}`)
+  
+  const response = await fetch(url, {
     ...fetchOptions,
     headers,
     cache: 'no-store',
   })
   
   if (!response.ok) {
+    const text = await response.text()
+    console.error(`[API] Error ${response.status}: ${text}`)
     throw new Error(`API error: ${response.status} ${response.statusText}`)
   }
   
