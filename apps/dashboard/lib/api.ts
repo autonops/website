@@ -12,9 +12,8 @@ interface FetchOptions extends RequestInit {
 async function fetchAPI<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
   const { skipAuth, ...fetchOptions } = options
   
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...fetchOptions.headers,
   }
   
   if (!skipAuth && API_KEY) {
@@ -24,7 +23,7 @@ async function fetchAPI<T>(endpoint: string, options: FetchOptions = {}): Promis
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...fetchOptions,
     headers,
-    next: { revalidate: 60 }, // Cache for 60 seconds
+    cache: 'no-store',
   })
   
   if (!response.ok) {

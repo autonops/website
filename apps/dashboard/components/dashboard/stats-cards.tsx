@@ -2,7 +2,6 @@ import { Card, Metric, Text, Flex, BadgeDelta } from '@tremor/react'
 import { Shield, Server, CheckCircle, Rocket } from 'lucide-react'
 import { getDashboardStats, DashboardStats } from '@/lib/api'
 
-// Fallback data when API is unavailable
 const fallbackStats: DashboardStats = {
   resources_monitored: 0,
   security_score: 100,
@@ -31,11 +30,49 @@ export async function StatsCards() {
       value: data.resources_monitored.toLocaleString(),
       icon: Server,
       change: isLive ? 'Live Data' : 'Offline',
-      changeType: isLive ? 'increase' as const : 'decrease' as const,
+      changeType: isLive ? 'increase' : 'decrease',
     },
     {
       name: 'Security Score',
       value: `${data.security_grade} (${data.security_score}%)`,
       icon: Shield,
       change: data.security_score >= 80 ? 'Good' : 'Needs attention',
-      changeType: data.security_score >= 80 ? 'increase' as const : 'decrease' as cons
+      changeType: data.security_score >= 80 ? 'increase' : 'decrease',
+    },
+    {
+      name: 'Compliance',
+      value: data.compliance_status[0]?.framework || 'SOC2',
+      icon: CheckCircle,
+      change: data.compliance_status[0]?.status === 'compliant' ? 'Compliant' : 'Pending',
+      changeType: data.compliance_status[0]?.status === 'compliant' ? 'increase' : 'unchanged',
+    },
+    {
+      name: 'Active Migrations',
+      value: data.active_migrations.toString(),
+      icon: Rocket,
+      change: data.active_migrations > 0 ? 'In Progress' : 'None active',
+      changeType: 'unchanged',
+    },
+  ] as const
+  
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {stats.map((stat) => (
+        <Card key={stat.name} decoration="top" decorationColor="blue">
+          <Flex justifyContent="between" alignItems="center">
+            <div>
+              <Text>{stat.name}</Text>
+              <Metric className="mt-1">{stat.value}</Metric>
+            </div>
+            <stat.icon className="h-8 w-8 text-[--text-light]" />
+          </Flex>
+          <Flex justifyContent="start" className="mt-4">
+            <BadgeDelta deltaType={stat.changeType}>
+              {stat.change}
+            </BadgeDelta>
+          </Flex>
+        </Card>
+      ))}
+    </div>
+  )
+}
