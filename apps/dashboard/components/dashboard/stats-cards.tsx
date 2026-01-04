@@ -17,7 +17,9 @@ export async function StatsCards() {
   let data: DashboardStats
   
   try {
+    console.log('Fetching dashboard stats...')
     data = await getDashboardStats()
+    console.log('Stats received:', data)
   } catch (error) {
     console.error('Failed to fetch dashboard stats:', error)
     data = fallbackStats
