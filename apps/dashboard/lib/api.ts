@@ -81,6 +81,13 @@ export interface Scan {
   created_at: string
 }
 
+interface ScansListResponse {
+  scans: Scan[]
+  total: number
+  limit: number
+  offset: number
+}
+
 // API Functions
 export async function getDashboardStats(): Promise<DashboardStats> {
   return fetchAPI<DashboardStats>('/api/dashboard/stats')
@@ -91,7 +98,8 @@ export async function getRecommendations(): Promise<Recommendation[]> {
 }
 
 export async function getRecentScans(limit = 10): Promise<Scan[]> {
-  return fetchAPI<Scan[]>(`/api/scans?limit=${limit}`)
+  const response = await fetchAPI<ScansListResponse>(`/api/scans?limit=${limit}`)
+  return response.scans
 }
 
 export async function healthCheck(): Promise<{ status: string; database: string }> {
