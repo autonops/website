@@ -1,18 +1,23 @@
 """
 License Router
 
-License validation and status endpoints.
-Proxies to the license server.
+Handles license-related operations for user accounts.
+Receives updates from License Server when users purchase licenses.
 """
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from pydantic import BaseModel
-from typing import Optional, List
-import httpx
+from typing import Optional
+import os
+import secrets
+import logging
 
-from config import settings
-from services.auth import get_current_user_id
+from database import get_db
+from models import User
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -20,102 +25,130 @@ router = APIRouter()
 # Schemas
 # =============================================================================
 
-class LicenseStatus(BaseModel):
-    """License status response."""
-    tier: str  # trial, pro, team, enterprise
-    status: str  # active, expired, cancelled
-    tools_enabled: List[str]
-    trial_days_remaining: Optional[int] = None
-    runs_today: Optional[int] = None
-    runs_limit: Optional[int] = None
-    valid_until: Optional[str] = None
+class LicenseUpdateRequest(BaseModel):
+    """Request from License Server when a license is created/updated."""
+    email: str
+    license_key: str
+    tier: str  # pro, team, enterprise
+    expires_at: Optional[str] = None
 
 
-class ValidateLicenseRequest(BaseModel):
-    """Validate license request."""
-    key: str
+class LicenseStatusResponse(BaseModel):
+    """Response with user's license status."""
+    email: str
+    tier: str
+    license_key: Optional[str] = None
+    expires_at: Optional[str] = None
+    is_active: bool
 
 
-class ValidateLicenseResponse(BaseModel):
-    """Validate license response."""
-    valid: bool
-    tier: Optional[str] = None
-    message: Optional[str] = None
+# =============================================================================
+# Internal Auth
+# =============================================================================
+
+def verify_internal_key(x_internal_key: Optional[str] = Header(None)) -> bool:
+    """Verify the internal API key from License Server."""
+    expected_key = os.environ.get("INTERNAL_SERVICE_KEY")
+    if not expected_key:
+        logger.warning("INTERNAL_SERVICE_KEY not configured")
+        return False
+    if not x_internal_key:
+        return False
+    return secrets.compare_digest(x_internal_key, expected_key)
 
 
 # =============================================================================
 # Endpoints
 # =============================================================================
 
-@router.get("/status", response_model=LicenseStatus)
+@router.post("/license-update")
+async def receive_license_update(
+    request: LicenseUpdateRequest,
+    x_internal_key: Optional[str] = Header(None),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Receive license update from License Server.
+    
+    Called by License Server's Stripe webhook after a purchase.
+    Updates the user's tier in our database.
+    """
+    if not verify_internal_key(x_internal_key):
+        raise HTTPException(status_code=401, detail="Invalid internal key")
+    
+    # Find user by email (case-insensitive)
+    email = request.email.lower()
+    query = select(User).where(User.email == email)
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
+    
+    if not user:
+        # User doesn't exist yet - they'll get updated on first dashboard sign-in
+        # We could store pending upgrades in a separate table, but for now just log
+        logger.info(f"License update for unknown user: {email} -> {request.tier}")
+        return {
+            "status": "pending",
+            "message": "User not found - will be updated on first sign-in",
+            "email": email,
+            "tier": request.tier
+        }
+    
+    # Update user's tier
+    old_tier = user.tier
+    user.tier = request.tier
+    
+    # Clear trial dates since they now have a paid license
+    user.trial_started_at = None
+    user.trial_ends_at = None
+    
+    await db.commit()
+    await db.refresh(user)
+    
+    logger.info(f"Updated user {email}: {old_tier} -> {request.tier}, license={request.license_key}")
+    
+    return {
+        "status": "updated",
+        "email": email,
+        "tier": request.tier,
+        "previous_tier": old_tier,
+        "user_id": str(user.id)
+    }
+
+
+@router.get("/license-status")
 async def get_license_status(
-    user_id: str = Depends(get_current_user_id),
+    email: str,
+    x_internal_key: Optional[str] = Header(None),
+    db: AsyncSession = Depends(get_db),
 ):
     """
-    Get the current user's license status.
+    Get a user's license status.
     
-    Proxies to the license server.
+    Can be called by License Server to check if a user exists
+    and what their current tier is.
     """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{settings.license_server_url}/api/status",
-                params={"user_id": user_id},
-                timeout=10.0,
-            )
-            response.raise_for_status()
-            data = response.json()
-            
-            return LicenseStatus(**data)
+    if not verify_internal_key(x_internal_key):
+        raise HTTPException(status_code=401, detail="Invalid internal key")
     
-    except httpx.HTTPStatusError as e:
-        if e.response.status_code == 404:
-            # No license found, return trial status
-            return LicenseStatus(
-                tier="trial",
-                status="active",
-                tools_enabled=["verify", "codify", "migrate"],
-                trial_days_remaining=30,
-                runs_today=30,
-                runs_limit=30,
-            )
-        raise HTTPException(status_code=502, detail="License server error")
+    # Find user by email (case-insensitive)
+    query = select(User).where(User.email == email.lower())
+    result = await db.execute(query)
+    user = result.scalar_one_or_none()
     
-    except httpx.RequestError:
-        raise HTTPException(status_code=502, detail="Could not reach license server")
-
-
-@router.post("/validate", response_model=ValidateLicenseResponse)
-async def validate_license(
-    request: ValidateLicenseRequest,
-    user_id: str = Depends(get_current_user_id),
-):
-    """
-    Validate a license key.
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
     
-    Used when a user enters a license key in settings.
-    """
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{settings.license_server_url}/api/validate",
-                json={
-                    "key": request.key,
-                    "user_id": user_id,
-                },
-                timeout=10.0,
-            )
-            response.raise_for_status()
-            data = response.json()
-            
-            return ValidateLicenseResponse(**data)
+    # Determine if license is active
+    is_active = False
+    if user.tier in ("pro", "team", "enterprise"):
+        is_active = True
+    elif user.tier == "trial" and user.is_trial_active:
+        is_active = True
     
-    except httpx.HTTPStatusError as e:
-        error_data = e.response.json() if e.response.content else {}
-        return ValidateLicenseResponse(
-            valid=False,
-            message=error_data.get("message", "Invalid license key"),
-        )
-    
-    except httpx.RequestError:
-        raise HTTPException(status_code=502, detail="Could not reach license server")
+    return LicenseStatusResponse(
+        email=user.email,
+        tier=user.tier,
+        license_key=None,  # We don't store the key, just the tier
+        expires_at=user.trial_ends_at.isoformat() if user.trial_ends_at else None,
+        is_active=is_active
+    )
