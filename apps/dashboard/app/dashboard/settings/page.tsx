@@ -1,18 +1,64 @@
 'use client'
 
-import { useUserSync } from '@/hooks/useUserSync'
-import { useState } from 'react'
+import { useUser } from '@clerk/nextjs'
+import { useEffect, useState } from 'react'
 import { Copy, Eye, EyeOff, Check } from 'lucide-react'
-
+import { upsertUser, getUserStats, User, UserStats } from '@/lib/api'
 
 export default function SettingsPage() {
-  const { user, loading, error, apiKey, tier, trialDaysRemaining } = useUserSync()
+  const { user: clerkUser, isLoaded, isSignedIn } = useUser()
+  const [user, setUser] = useState<User | null>(null)
+  const [stats, setStats] = useState<UserStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [showKey, setShowKey] = useState(false)
 
+  useEffect(() => {
+    async function fetchData() {
+      if (!isLoaded) return
+      
+      if (!isSignedIn || !clerkUser) {
+        setUser(null)
+        setStats(null)
+        setLoading(false)
+        return
+      }
+
+      try {
+        setLoading(true)
+        setError(null)
+        
+        const email = clerkUser.primaryEmailAddress?.emailAddress
+        if (!email) {
+          throw new Error('No email address found')
+        }
+
+        const name = [clerkUser.firstName, clerkUser.lastName]
+          .filter(Boolean)
+          .join(' ') || null
+
+        // Fetch user data
+        const syncedUser = await upsertUser(clerkUser.id, email, name)
+        setUser(syncedUser)
+
+        // Fetch stats
+        const userStats = await getUserStats(clerkUser.id)
+        setStats(userStats)
+      } catch (err) {
+        console.error('Failed to fetch data:', err)
+        setError(err instanceof Error ? err.message : 'Failed to fetch data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [clerkUser, isLoaded, isSignedIn])
+
   const copyApiKey = async () => {
-    if (!apiKey) return
-    await navigator.clipboard.writeText(apiKey)
+    if (!user?.api_key) return
+    await navigator.clipboard.writeText(user.api_key)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -27,6 +73,7 @@ export default function SettingsPage() {
         <div className="animate-pulse space-y-6">
           <div className="h-40 bg-[--bg-alt] rounded-lg"></div>
           <div className="h-48 bg-[--bg-alt] rounded-lg"></div>
+          <div className="h-32 bg-[--bg-alt] rounded-lg"></div>
         </div>
       </div>
     )
@@ -69,10 +116,10 @@ export default function SettingsPage() {
           <div>
             <label className="text-sm text-[--text-light]">Plan</label>
             <div className="flex items-center gap-2">
-              <span className="capitalize text-[--text]">{tier}</span>
-              {tier === 'trial' && trialDaysRemaining > 0 && (
+              <span className="capitalize text-[--text]">{user?.tier}</span>
+              {user?.tier === 'trial' && user?.trial_days_remaining > 0 && (
                 <span className="text-xs bg-yellow-500/10 text-yellow-500 px-2 py-1 rounded">
-                  {trialDaysRemaining} days left
+                  {user.trial_days_remaining} days left
                 </span>
               )}
             </div>
@@ -89,8 +136,8 @@ export default function SettingsPage() {
           </p>
           
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-[--bg] border border-[--border] rounded-lg px-4 py-3 font-mono text-sm text-[--text]">
-              {showKey ? apiKey : '•'.repeat(40)}
+            <div className="flex-1 bg-[--bg] border border-[--border] rounded-lg px-4 py-3 font-mono text-sm text-[--text] overflow-hidden">
+              {showKey ? user?.api_key : '•'.repeat(40)}
             </div>
             <button
               onClick={() => setShowKey(!showKey)}
@@ -111,7 +158,7 @@ export default function SettingsPage() {
           <div className="mt-4 p-4 bg-[--bg] rounded-lg">
             <p className="text-sm text-[--text-light] mb-2">Configure your CLI:</p>
             <code className="text-sm font-mono text-[--primary]">
-              infraiq sync configure --api-key {showKey ? apiKey : 'YOUR_API_KEY'}
+              infraiq sync configure --api-key {showKey ? user?.api_key : 'YOUR_API_KEY'}
             </code>
           </div>
         </div>
@@ -124,15 +171,15 @@ export default function SettingsPage() {
           <div className="grid grid-cols-3 gap-6">
             <div>
               <label className="text-sm text-[--text-light]">Scans Today</label>
-              <p className="text-2xl font-bold text-[--text]">0</p>
+              <p className="text-2xl font-bold text-[--text]">{stats?.scans_today ?? 0}</p>
             </div>
             <div>
               <label className="text-sm text-[--text-light]">Scans This Month</label>
-              <p className="text-2xl font-bold text-[--text]">0</p>
+              <p className="text-2xl font-bold text-[--text]">{stats?.scans_this_month ?? 0}</p>
             </div>
             <div>
               <label className="text-sm text-[--text-light]">Total Scans</label>
-              <p className="text-2xl font-bold text-[--text]">0</p>
+              <p className="text-2xl font-bold text-[--text]">{stats?.scans_total ?? 0}</p>
             </div>
           </div>
         </div>

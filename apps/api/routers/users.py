@@ -7,14 +7,14 @@ Called by dashboard after Clerk authentication.
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func, and_
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, timedelta, timezone
 import secrets
 
 from database import get_db
-from models import User
+from models import User, Scan
 
 router = APIRouter()
 
@@ -45,6 +45,13 @@ class UserMeResponse(BaseModel):
     
     class Config:
         from_attributes = True
+
+
+class UserStatsResponse(BaseModel):
+    """Response for user usage stats."""
+    scans_today: int
+    scans_this_month: int
+    scans_total: int
 
 
 # =============================================================================
@@ -143,4 +150,47 @@ async def get_current_user(
         trial_ends_at=user.trial_ends_at,
         trial_days_remaining=user.trial_days_remaining,
         created_at=user.created_at,
+    )
+
+
+@router.get("/me/stats", response_model=UserStatsResponse)
+async def get_user_stats(
+    clerk_id: str,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Get usage stats for a user.
+    
+    Returns scan counts for today, this month, and all time.
+    """
+    now = datetime.now(timezone.utc)
+    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    
+    # Count scans today
+    today_query = select(func.count(Scan.id)).where(
+        and_(
+            Scan.user_id == clerk_id,
+            Scan.created_at >= today_start
+        )
+    )
+    scans_today = await db.scalar(today_query) or 0
+    
+    # Count scans this month
+    month_query = select(func.count(Scan.id)).where(
+        and_(
+            Scan.user_id == clerk_id,
+            Scan.created_at >= month_start
+        )
+    )
+    scans_this_month = await db.scalar(month_query) or 0
+    
+    # Count total scans
+    total_query = select(func.count(Scan.id)).where(Scan.user_id == clerk_id)
+    scans_total = await db.scalar(total_query) or 0
+    
+    return UserStatsResponse(
+        scans_today=scans_today,
+        scans_this_month=scans_this_month,
+        scans_total=scans_total,
     )

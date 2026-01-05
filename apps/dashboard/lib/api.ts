@@ -101,6 +101,12 @@ export interface User {
   created_at: string
 }
 
+export interface UserStats {
+  scans_today: number
+  scans_this_month: number
+  scans_total: number
+}
+
 // API Functions
 export async function getDashboardStats(): Promise<DashboardStats> {
   return fetchAPI<DashboardStats>('/api/dashboard/stats')
@@ -128,12 +134,18 @@ export async function upsertUser(clerkId: string, email: string, name?: string |
       email: email,
       name: name || null,
     }),
-    skipAuth: true, // No auth needed - clerk_id is the identifier
+    skipAuth: true,
   })
 }
 
 export async function getUser(clerkId: string): Promise<User> {
   return fetchAPI<User>(`/api/users/me?clerk_id=${clerkId}`, {
+    skipAuth: true,
+  })
+}
+
+export async function getUserStats(clerkId: string): Promise<UserStats> {
+  return fetchAPI<UserStats>(`/api/users/me/stats?clerk_id=${clerkId}`, {
     skipAuth: true,
   })
 }
