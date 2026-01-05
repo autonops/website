@@ -2,6 +2,8 @@
 
 import { useUserSync } from '@/hooks/useUserSync'
 import { useState } from 'react'
+import { Copy, Eye, EyeOff, Check } from 'lucide-react'
+
 
 export default function SettingsPage() {
   const { user, loading, error, apiKey, tier, trialDaysRemaining } = useUserSync()
@@ -17,11 +19,14 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <h1 className="text-2xl font-bold mb-6">Settings</h1>
-        <div className="animate-pulse">
-          <div className="h-4 bg-[--border] rounded w-1/4 mb-4"></div>
-          <div className="h-10 bg-[--border] rounded w-1/2"></div>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-2xl font-bold text-[--text]">Settings</h1>
+          <p className="text-[--text-light] mt-1">Manage your account and API access</p>
+        </div>
+        <div className="animate-pulse space-y-6">
+          <div className="h-40 bg-[--bg-alt] rounded-lg"></div>
+          <div className="h-48 bg-[--bg-alt] rounded-lg"></div>
         </div>
       </div>
     )
@@ -29,8 +34,11 @@ export default function SettingsPage() {
 
   if (error) {
     return (
-      <div className="p-8">
-        <h1 className="text-2xl font-bold mb-6">Settings</h1>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-2xl font-bold text-[--text]">Settings</h1>
+          <p className="text-[--text-light] mt-1">Manage your account and API access</p>
+        </div>
         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-500">
           Error loading user data: {error}
         </div>
@@ -39,13 +47,16 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="p-8 max-w-4xl">
-      <h1 className="text-2xl font-bold mb-2">Settings</h1>
-      <p className="text-[--text-light] mb-8">Manage your account and API access</p>
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-[--text]">Settings</h1>
+        <p className="text-[--text-light] mt-1">Manage your account and API access</p>
+      </div>
 
       {/* Account Info */}
-      <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Account</h2>
+      <section>
+        <h2 className="text-lg font-semibold text-[--text] mb-4">Account</h2>
         <div className="bg-[--card-bg] border border-[--border] rounded-lg p-6 space-y-4">
           <div>
             <label className="text-sm text-[--text-light]">Email</label>
@@ -70,28 +81,30 @@ export default function SettingsPage() {
       </section>
 
       {/* API Key */}
-      <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">API Key</h2>
+      <section>
+        <h2 className="text-lg font-semibold text-[--text] mb-4">API Key</h2>
         <div className="bg-[--card-bg] border border-[--border] rounded-lg p-6">
           <p className="text-sm text-[--text-light] mb-4">
             Use this API key to authenticate CLI commands and API requests.
           </p>
           
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-[--bg] border border-[--border] rounded-lg px-4 py-3 font-mono text-sm">
-              {showKey ? apiKey : '•'.repeat(32)}
+            <div className="flex-1 bg-[--bg] border border-[--border] rounded-lg px-4 py-3 font-mono text-sm text-[--text]">
+              {showKey ? apiKey : '•'.repeat(40)}
             </div>
             <button
               onClick={() => setShowKey(!showKey)}
-              className="px-4 py-3 bg-[--bg-alt] border border-[--border] rounded-lg hover:bg-[--border] transition-colors"
+              className="p-3 bg-[--bg-alt] border border-[--border] rounded-lg hover:bg-[--border] transition-colors text-[--text]"
+              title={showKey ? 'Hide' : 'Show'}
             >
-              {showKey ? 'Hide' : 'Show'}
+              {showKey ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
             <button
               onClick={copyApiKey}
-              className="px-4 py-3 bg-[--primary] text-white rounded-lg hover:bg-[--primary-dark] transition-colors"
+              className="p-3 bg-[--primary] text-white rounded-lg hover:opacity-90 transition-opacity"
+              title="Copy"
             >
-              {copied ? 'Copied!' : 'Copy'}
+              {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
             </button>
           </div>
 
@@ -106,7 +119,7 @@ export default function SettingsPage() {
 
       {/* Usage */}
       <section>
-        <h2 className="text-lg font-semibold mb-4">Usage</h2>
+        <h2 className="text-lg font-semibold text-[--text] mb-4">Usage</h2>
         <div className="bg-[--card-bg] border border-[--border] rounded-lg p-6">
           <div className="grid grid-cols-3 gap-6">
             <div>

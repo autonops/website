@@ -23,17 +23,17 @@ const navigation = {
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   ],
   tools: [
-    { name: 'VerifyIQ', href: '/verify', icon: Shield, emoji: '🔍' },
-    { name: 'MigrateIQ', href: '/migrate', icon: Rocket, emoji: '🚀' },
-    { name: 'CodifyIQ', href: '/codify', icon: FileCode, emoji: '📝' },
-    { name: 'ComplyIQ', href: '/comply', icon: Lock, emoji: '🔒' },
-    { name: 'DataIQ', href: '/dataiq', icon: Database, emoji: '🗄️' },
-    { name: 'SecureIQ', href: '/secureiq', icon: Key, emoji: '🔑' },
-    { name: 'Tessera', href: '/tessera', icon: Puzzle, emoji: '🎭' },
+    { name: 'VerifyIQ', href: '/dashboard/verify', icon: Shield, emoji: '🔍' },
+    { name: 'MigrateIQ', href: '/dashboard/migrate', icon: Rocket, emoji: '🚀' },
+    { name: 'CodifyIQ', href: '/dashboard/codify', icon: FileCode, emoji: '📝' },
+    { name: 'ComplyIQ', href: '/dashboard/comply', icon: Lock, emoji: '🔒' },
+    { name: 'DataIQ', href: '/dashboard/dataiq', icon: Database, emoji: '🗄️' },
+    { name: 'SecureIQ', href: '/dashboard/secureiq', icon: Key, emoji: '🔐' },
+    { name: 'Tessera', href: '/dashboard/tessera', icon: Puzzle, emoji: '🎭' },
   ],
   workspace: [
-    { name: 'Projects', href: '/projects', icon: FolderKanban },
-    { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Projects', href: '/dashboard/projects', icon: FolderKanban },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ],
 }
 
