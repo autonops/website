@@ -1,51 +1,51 @@
 """
 User Model
 
-Stores additional user metadata not in Clerk.
-Synced via Clerk webhooks.
+Matches the Phase 1 schema in infraiq-db.
 """
 
-from sqlalchemy import Column, String, DateTime, JSON
+from sqlalchemy import Column, String, DateTime
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
+from datetime import datetime, timezone
+import uuid as uuid_module
 
 from database import Base
 
 
 class User(Base):
     """
-    User model.
-    
-    Stores user data synced from Clerk plus InfraIQ-specific data.
+    User model - synced from Clerk with InfraIQ-specific data.
     """
     __tablename__ = "users"
     
-    id = Column(String, primary_key=True)  # Clerk user ID
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid_module.uuid4)
+    clerk_id = Column(String(255), unique=True, nullable=False, index=True)
     email = Column(String(255), nullable=False, unique=True, index=True)
-    
-    # Profile info from Clerk
-    first_name = Column(String(100), nullable=True)
-    last_name = Column(String(100), nullable=True)
-    
-    # InfraIQ-specific
-    license_key = Column(String(50), nullable=True, index=True)
-    license_tier = Column(String(20), nullable=True)  # trial, pro, team, enterprise
-    
-    # Preferences
-    preferences = Column(JSON, nullable=False, default=dict)
-    # Expected structure:
-    # {
-    #     "default_provider": "aws",
-    #     "default_region": "us-east-1",
-    #     "theme": "dark",
-    #     "notifications": {
-    #         "email_on_scan": true,
-    #         "email_on_critical": true
-    #     }
-    # }
-    
-    # Timestamps
+    name = Column(String(255), nullable=True)
+    api_key = Column(String(64), unique=True, nullable=True, index=True)
+    tier = Column(String(20), nullable=False, default="trial")  # trial, pro, team, enterprise
+    trial_started_at = Column(DateTime(timezone=True), nullable=True)
+    trial_ends_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     def __repr__(self):
-        return f"<User {self.id} ({self.email})>"
+        return f"<User {self.clerk_id} ({self.email})>"
+    
+    @property
+    def is_trial_active(self) -> bool:
+        """Check if trial is still active."""
+        if self.tier != "trial":
+            return False
+        if not self.trial_ends_at:
+            return False
+        return datetime.now(timezone.utc) < self.trial_ends_at
+    
+    @property
+    def trial_days_remaining(self) -> int:
+        """Get remaining trial days."""
+        if not self.trial_ends_at:
+            return 0
+        remaining = self.trial_ends_at - datetime.now(timezone.utc)
+        return max(0, remaining.days)

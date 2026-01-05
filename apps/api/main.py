@@ -98,13 +98,14 @@ async def root():
 
 # Only include routers if database is configured
 if os.getenv("DATABASE_URL"):
-    from routers import scans, projects, license, sync, webhooks, dashboard
+    from routers import scans, projects, license, sync, webhooks, dashboard, users
     app.include_router(scans.router, prefix="/api/scans", tags=["scans"])
     app.include_router(projects.router, prefix="/api/projects", tags=["projects"])
     app.include_router(license.router, prefix="/api/license", tags=["license"])
     app.include_router(sync.router, prefix="/api/sync", tags=["sync"])
     app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
     app.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
+    app.include_router(users.router, prefix="/api/users", tags=["users"])
 
 
 if __name__ == "__main__":
@@ -115,4 +116,3 @@ if __name__ == "__main__":
         port=int(os.getenv("PORT", 8000)),
         reload=settings.environment == "development",
     )
-# CI Test Sat Jan  3 20:48:24 CST 2026
