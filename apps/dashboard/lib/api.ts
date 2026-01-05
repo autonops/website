@@ -88,6 +88,19 @@ interface ScansListResponse {
   offset: number
 }
 
+export interface User {
+  id: string
+  clerk_id: string
+  email: string
+  name: string | null
+  api_key: string
+  tier: string
+  trial_started_at: string | null
+  trial_ends_at: string | null
+  trial_days_remaining: number
+  created_at: string
+}
+
 // API Functions
 export async function getDashboardStats(): Promise<DashboardStats> {
   return fetchAPI<DashboardStats>('/api/dashboard/stats')
@@ -104,4 +117,23 @@ export async function getRecentScans(limit = 10): Promise<Scan[]> {
 
 export async function healthCheck(): Promise<{ status: string; database: string }> {
   return fetchAPI('/health', { skipAuth: true })
+}
+
+// User API Functions
+export async function upsertUser(clerkId: string, email: string, name?: string | null): Promise<User> {
+  return fetchAPI<User>('/api/users/me', {
+    method: 'POST',
+    body: JSON.stringify({
+      clerk_id: clerkId,
+      email: email,
+      name: name || null,
+    }),
+    skipAuth: true, // No auth needed - clerk_id is the identifier
+  })
+}
+
+export async function getUser(clerkId: string): Promise<User> {
+  return fetchAPI<User>(`/api/users/me?clerk_id=${clerkId}`, {
+    skipAuth: true,
+  })
 }
