@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://app.autonops.io/sitemap.xml
+
+# Block sensitive paths
+Disallow: /api/
+Disallow: /dashboard/settings
