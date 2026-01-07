@@ -1,22 +1,9 @@
-import { KeyRound } from "lucide-react";
-import { ToolPage } from "@/components/tool-page";
+import { ToolPageWrapper } from '@/components/dashboard/tool-page-wrapper'
 
-export default function SecureIQDashboardPage() {
-  return (
-    <ToolPage
-      name="SecureIQ"
-      description="Secret discovery and management for migrations. Discover, classify, and map secrets without ever reading their values."
-      icon={<KeyRound className="w-8 h-8 text-amber-400" />}
-      color="bg-amber-400"
-      features={[
-        "Discover all secrets without reading actual values",
-        "Classify secrets by type and criticality level",
-        "Map dependencies between secrets and services",
-        "Generate migration checklists with manual steps",
-        "Validate compliance requirements (SOC2, HIPAA, PCI-DSS)",
-      ]}
-      cliCommand="infraiq secureiq scan --provider heroku --sync"
-      docsUrl="https://autonops.io/docs/secureiq"
-    />
-  );
+export const metadata = {
+  title: 'SecureIQ - Secret Management',
+}
+
+export default function SecureIQPage() {
+  return <ToolPageWrapper toolId="secureiq" />
 }

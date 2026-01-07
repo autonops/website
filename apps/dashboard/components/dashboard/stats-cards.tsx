@@ -1,7 +1,8 @@
 import { Card, Metric, Text, Flex, BadgeDelta } from '@tremor/react'
 import { Shield, Server, CheckCircle, Rocket } from 'lucide-react'
-import { getUserDashboardStats, DashboardStats } from '@/lib/api'
+import Link from 'next/link'
 import { getCurrentUserApiKey } from '@/lib/get-current-user'
+import { getUserDashboardStats, DashboardStats } from '@/lib/api'
 
 // Fallback data when API is unavailable or user not authenticated
 const fallbackStats: DashboardStats = {
@@ -19,15 +20,11 @@ export async function StatsCards() {
   let isLive = false
   
   try {
-    // Get the current user's personal API key
     const userApiKey = await getCurrentUserApiKey()
     
     if (userApiKey) {
-      // Fetch stats using user's personal key - returns ONLY their data
       data = await getUserDashboardStats(userApiKey)
       isLive = true
-    } else {
-      console.warn('[StatsCards] No user API key available')
     }
   } catch (error) {
     console.error('[StatsCards] Failed to fetch dashboard stats:', error)
@@ -40,6 +37,7 @@ export async function StatsCards() {
       icon: Server,
       change: isLive ? 'Live Data' : 'No data',
       changeType: isLive ? 'increase' as const : 'unchanged' as const,
+      href: '/dashboard/resources',
     },
     {
       name: 'Security Score',
@@ -47,6 +45,7 @@ export async function StatsCards() {
       icon: Shield,
       change: data.security_score >= 80 ? 'Good' : 'Needs attention',
       changeType: data.security_score >= 80 ? 'increase' as const : 'decrease' as const,
+      href: '/dashboard/security',
     },
     {
       name: 'Compliance',
@@ -54,6 +53,7 @@ export async function StatsCards() {
       icon: CheckCircle,
       change: data.compliance_status[0]?.status === 'compliant' ? 'Compliant' : 'Pending',
       changeType: data.compliance_status[0]?.status === 'compliant' ? 'increase' as const : 'unchanged' as const,
+      href: '/dashboard/compliance',
     },
     {
       name: 'Active Migrations',
@@ -61,26 +61,33 @@ export async function StatsCards() {
       icon: Rocket,
       change: data.active_migrations > 0 ? 'In Progress' : 'None active',
       changeType: 'unchanged' as const,
+      href: '/dashboard/migrations',
     },
   ]
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat) => (
-        <Card key={stat.name} decoration="top" decorationColor="blue">
-          <Flex justifyContent="between" alignItems="center">
-            <div>
-              <Text>{stat.name}</Text>
-              <Metric className="mt-1">{stat.value}</Metric>
-            </div>
-            <stat.icon className="h-8 w-8 text-[--text-light]" />
-          </Flex>
-          <Flex justifyContent="start" className="mt-4">
-            <BadgeDelta deltaType={stat.changeType}>
-              {stat.change}
-            </BadgeDelta>
-          </Flex>
-        </Card>
+        <Link key={stat.name} href={stat.href}>
+          <Card 
+            decoration="top" 
+            decorationColor="blue"
+            className="cursor-pointer hover:border-blue-500 transition-colors"
+          >
+            <Flex justifyContent="between" alignItems="center">
+              <div>
+                <Text>{stat.name}</Text>
+                <Metric className="mt-1">{stat.value}</Metric>
+              </div>
+              <stat.icon className="h-8 w-8 text-[--text-light]" />
+            </Flex>
+            <Flex justifyContent="start" className="mt-4">
+              <BadgeDelta deltaType={stat.changeType}>
+                {stat.change}
+              </BadgeDelta>
+            </Flex>
+          </Card>
+        </Link>
       ))}
     </div>
   )
