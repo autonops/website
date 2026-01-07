@@ -1,51 +1,105 @@
-import Link from 'next/link'
-import { Badge, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from '@tremor/react'
-import { formatRelativeTime } from '@/lib/utils'
-import { getRecentScans, Scan } from '@/lib/api'
+'use client'
 
-const toolConfig: Record<string, { emoji: string; displayName: string }> = {
-  verify: { emoji: '🔍', displayName: 'VerifyIQ' },
-  migrate: { emoji: '🚀', displayName: 'MigrateIQ' },
-  codify: { emoji: '📝', displayName: 'CodifyIQ' },
-  comply: { emoji: '🔒', displayName: 'ComplyIQ' },
-  dataiq: { emoji: '🗄️', displayName: 'DataIQ' },
-  secureiq: { emoji: '🔑', displayName: 'SecureIQ' },
-  tessera: { emoji: '🎭', displayName: 'Tessera' },
+import { Table, TableHead, TableRow, TableHeaderCell, TableBody, TableCell, Badge } from '@tremor/react'
+import { useEffect, useState } from 'react'
+import { useAuth } from '@clerk/nextjs'
+import { formatDistanceToNow } from 'date-fns'
+
+interface Scan {
+  id: string
+  tool: string
+  provider: string
+  status: string
+  summary: {
+    resources_scanned: number
+    issues_found: number
+    critical: number
+    high: number
+    medium: number
+    low: number
+  }
+  created_at: string
 }
 
-function getStatusBadge(status: string) {
-  switch (status) {
-    case 'completed':
-      return <Badge color="green">Completed</Badge>
-    case 'in_progress':
-      return <Badge color="yellow">In Progress</Badge>
-    case 'failed':
-      return <Badge color="red">Failed</Badge>
-    default:
-      return <Badge color="gray">{status}</Badge>
-  }
+// Tool colors
+const toolColors: Record<string, string> = {
+  verify: 'blue',
+  codify: 'purple',
+  migrate: 'orange',
+  comply: 'green',
+  dataiq: 'cyan',
+  secureiq: 'yellow',
+  tessera: 'pink',
 }
 
-export async function RecentScans() {
-  let scans: Scan[] = []
-  
-  try {
-    scans = await getRecentScans(5)
-  } catch (error) {
-    console.error('Failed to fetch recent scans:', error)
-  }
-  
-  if (scans.length === 0) {
+const statusColors: Record<string, string> = {
+  completed: 'green',
+  running: 'blue',
+  failed: 'red',
+  pending: 'gray',
+}
+
+export function RecentScans() {
+  const [scans, setScans] = useState<Scan[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const { userId } = useAuth()
+
+  useEffect(() => {
+    async function fetchScans() {
+      if (!userId) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        // Fetch user's scans through our API route
+        const response = await fetch('/api/user/scans')
+        if (!response.ok) {
+          throw new Error('Failed to fetch scans')
+        }
+        const data = await response.json()
+        setScans(data.scans || [])
+      } catch (err) {
+        console.error('[RecentScans] Failed to fetch scans:', err)
+        setError('Failed to load recent activity')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchScans()
+  }, [userId])
+
+  if (loading) {
     return (
-      <div className="mt-4 py-8 text-center text-[--text-light]">
-        <p>No scans yet.</p>
-        <p className="text-sm mt-2">
-          Run <code className="bg-[--bg-alt] px-2 py-1 rounded">infraiq verify scan --provider aws</code> to get started.
-        </p>
+      <div className="mt-4 space-y-3">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="h-12 bg-[--bg-alt] rounded animate-pulse" />
+        ))}
       </div>
     )
   }
-  
+
+  if (error) {
+    return (
+      <p className="text-red-500 mt-4">{error}</p>
+    )
+  }
+
+  if (scans.length === 0) {
+    return (
+      <div className="mt-4">
+        <p className="text-[--text-light]">
+          No scans yet. Run your first scan with the CLI:
+        </p>
+        <pre className="mt-2 p-3 bg-[--bg-alt] rounded text-sm text-[--text-light] overflow-x-auto">
+          infraiq verify scan aws --sync
+        </pre>
+      </div>
+    )
+  }
+
   return (
     <Table className="mt-4">
       <TableHead>
@@ -58,42 +112,27 @@ export async function RecentScans() {
         </TableRow>
       </TableHead>
       <TableBody>
-        {scans.map((scan) => {
-          const config = toolConfig[scan.tool] || { emoji: '🔧', displayName: scan.tool }
-          const issues = scan.summary?.issues_found || 0
-          const critical = scan.summary?.critical || 0
-          
-          return (
-            <TableRow key={scan.id}>
-              <TableCell>
-                <Link 
-                  href={`/dashboard/${scan.tool}/${scan.id}`}
-                  className="flex items-center gap-2 hover:text-[--primary]"
-                >
-                  <span>{config.emoji}</span>
-                  <span className="font-medium">{config.displayName}</span>
-                </Link>
-              </TableCell>
-              <TableCell>{scan.provider}</TableCell>
-              <TableCell>{getStatusBadge(scan.status)}</TableCell>
-              <TableCell>
-                {issues > 0 ? (
-                  <div className="flex items-center gap-2">
-                    <span>{issues} issues</span>
-                    {critical > 0 && (
-                      <Badge color="red">{critical} critical</Badge>
-                    )}
-                  </div>
-                ) : (
-                  <span className="text-[--text-light]">—</span>
-                )}
-              </TableCell>
-              <TableCell className="text-[--text-light]">
-                {formatRelativeTime(new Date(scan.created_at))}
-              </TableCell>
-            </TableRow>
-          )
-        })}
+        {scans.map((scan) => (
+          <TableRow key={scan.id}>
+            <TableCell>
+              <Badge color={toolColors[scan.tool] || 'gray'}>
+                {scan.tool.charAt(0).toUpperCase() + scan.tool.slice(1)}IQ
+              </Badge>
+            </TableCell>
+            <TableCell>{scan.provider}</TableCell>
+            <TableCell>
+              <Badge color={statusColors[scan.status] || 'gray'}>
+                {scan.status.charAt(0).toUpperCase() + scan.status.slice(1)}
+              </Badge>
+            </TableCell>
+            <TableCell>
+              {scan.summary?.issues_found || 0} Issues
+            </TableCell>
+            <TableCell>
+              {formatDistanceToNow(new Date(scan.created_at), { addSuffix: true })}
+            </TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   )
