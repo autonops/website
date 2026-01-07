@@ -1,33 +1,33 @@
 /**
  * API Client for InfraIQ Backend
+ * 
+ * This client supports two modes:
+ * 1. Admin mode: Uses INFRAIQ_BACKEND_API_KEY for admin operations
+ * 2. User mode: Uses the user's personal iq_xxx key for user-specific data
  */
 
-function getApiKey(): string {
-  return process.env.INFRAIQ_BACKEND_API_KEY || ''
-}
-
-function getApiUrl(): string {
-  return process.env.NEXT_PUBLIC_API_URL || 'https://api.autonops.io'
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.autonops.io'
+const ADMIN_API_KEY = process.env.INFRAIQ_BACKEND_API_KEY || ''
 
 interface FetchOptions extends RequestInit {
   skipAuth?: boolean
+  userApiKey?: string  // Pass user's personal key for user-specific requests
 }
 
-async function fetchAPI<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
-  const { skipAuth, ...fetchOptions } = options
+export async function fetchAPI<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
+  const { skipAuth, userApiKey, ...fetchOptions } = options
   
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
   
-  const apiKey = getApiKey()
+  // Use user's key if provided, otherwise fall back to admin key
+  const apiKey = userApiKey || ADMIN_API_KEY
   if (!skipAuth && apiKey) {
     headers['X-API-Key'] = apiKey
   }
   
-  const url = `${getApiUrl()}${endpoint}`
-  console.log(`[API] Fetching ${url}, hasKey: ${!!apiKey}`)
+  const url = `${API_BASE_URL}${endpoint}`
   
   const response = await fetch(url, {
     ...fetchOptions,
@@ -107,45 +107,42 @@ export interface UserStats {
   scans_total: number
 }
 
-// API Functions
-export async function getDashboardStats(): Promise<DashboardStats> {
-  return fetchAPI<DashboardStats>('/api/dashboard/stats')
+// ============================================
+// Admin API Functions (use shared admin key)
+// ============================================
+
+export async function getUser(clerkId: string): Promise<User> {
+  return fetchAPI<User>(`/api/users/me?clerk_id=${clerkId}`)
 }
 
-export async function getRecommendations(): Promise<Recommendation[]> {
-  return fetchAPI<Recommendation[]>('/api/dashboard/recommendations')
+export async function upsertUser(clerkId: string, email: string, name?: string): Promise<User> {
+  return fetchAPI<User>('/api/users/me', {
+    method: 'POST',
+    body: JSON.stringify({ clerk_id: clerkId, email, name }),
+  })
 }
 
-export async function getRecentScans(limit = 10): Promise<Scan[]> {
-  const response = await fetchAPI<ScansListResponse>(`/api/scans?limit=${limit}`)
+// ============================================
+// User-specific API Functions (use user's key)
+// ============================================
+
+export async function getUserDashboardStats(userApiKey: string): Promise<DashboardStats> {
+  return fetchAPI<DashboardStats>('/api/dashboard/stats', { userApiKey })
+}
+
+export async function getUserRecommendations(userApiKey: string): Promise<Recommendation[]> {
+  return fetchAPI<Recommendation[]>('/api/dashboard/recommendations', { userApiKey })
+}
+
+export async function getUserScans(userApiKey: string, limit = 10): Promise<Scan[]> {
+  const response = await fetchAPI<ScansListResponse>(`/api/scans?limit=${limit}`, { userApiKey })
   return response.scans
+}
+
+export async function getUserStats(clerkId: string): Promise<UserStats> {
+  return fetchAPI<UserStats>(`/api/users/me/stats?clerk_id=${clerkId}`)
 }
 
 export async function healthCheck(): Promise<{ status: string; database: string }> {
   return fetchAPI('/health', { skipAuth: true })
-}
-
-// User API Functions
-export async function upsertUser(clerkId: string, email: string, name?: string | null): Promise<User> {
-  return fetchAPI<User>('/api/users/me', {
-    method: 'POST',
-    body: JSON.stringify({
-      clerk_id: clerkId,
-      email: email,
-      name: name || null,
-    }),
-    skipAuth: true,
-  })
-}
-
-export async function getUser(clerkId: string): Promise<User> {
-  return fetchAPI<User>(`/api/users/me?clerk_id=${clerkId}`, {
-    skipAuth: true,
-  })
-}
-
-export async function getUserStats(clerkId: string): Promise<UserStats> {
-  return fetchAPI<UserStats>(`/api/users/me/stats?clerk_id=${clerkId}`, {
-    skipAuth: true,
-  })
 }
