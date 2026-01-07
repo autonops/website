@@ -98,7 +98,7 @@ async def root():
 
 # Only include routers if database is configured
 if os.getenv("DATABASE_URL"):
-    from routers import scans, projects, license, sync, webhooks, dashboard, users
+    from routers import scans, projects, license, sync, webhooks, dashboard, users, checkout
     app.include_router(scans.router, prefix="/api/scans", tags=["scans"])
     app.include_router(projects.router, prefix="/api/projects", tags=["projects"])
     app.include_router(license.router, prefix="/api/license", tags=["license"])
@@ -106,6 +106,7 @@ if os.getenv("DATABASE_URL"):
     app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
     app.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
     app.include_router(users.router, prefix="/api/users", tags=["users"])
+    app.include_router(checkout.router)
 
 
 if __name__ == "__main__":

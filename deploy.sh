@@ -92,16 +92,17 @@ deploy_api() {
     
     cd apps/api
     
-    # Build and push Docker image
-    docker build -t gcr.io/$GCP_PROJECT/infraiq-api .
-    docker push gcr.io/$GCP_PROJECT/infraiq-api
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    IMAGE="us-central1-docker.pkg.dev/$GCP_PROJECT/infraiq-api/api:$TIMESTAMP"
     
-    # Deploy to Cloud Run
-    gcloud run deploy infraiq-api \
-        --image gcr.io/$GCP_PROJECT/infraiq-api \
-        --platform managed \
-        --region $GCP_REGION \
-        --allow-unauthenticated
+    # Build and push
+    docker build -t "$IMAGE" .
+    docker push "$IMAGE"
+    
+    # Update (not deploy) - preserves secrets and env vars
+    gcloud run services update infraiq-api \
+        --image "$IMAGE" \
+        --region $GCP_REGION
     
     cd ../..
     
