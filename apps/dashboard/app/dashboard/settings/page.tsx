@@ -39,7 +39,7 @@ export default function SettingsPage() {
           .join(' ') || null
 
         // Fetch user data
-        const syncedUser = await upsertUser(clerkUser.id, email, name)
+        const syncedUser = await upsertUser(clerkUser.id, email, name ?? undefined)
         setUser(syncedUser)
 
         // Fetch stats
