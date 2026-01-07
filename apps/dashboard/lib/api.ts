@@ -115,7 +115,7 @@ export async function getUser(clerkId: string): Promise<User> {
   return fetchAPI<User>(`/api/users/me?clerk_id=${clerkId}`)
 }
 
-export async function upsertUser(clerkId: string, email: string, name?: string): Promise<User> {
+export async function upsertUser(clerkId: string, email: string, name?: string | null): Promise<User> {
   return fetchAPI<User>('/api/users/me', {
     method: 'POST',
     body: JSON.stringify({ clerk_id: clerkId, email, name }),
