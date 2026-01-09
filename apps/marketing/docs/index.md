@@ -105,11 +105,10 @@ Built from real-world experience:
 
 InfraIQ is currently in beta through Q1 2026.
 
-[Join the Beta](https://autonops.io/#signup){ .md-button .md-button--primary }
-[View on GitHub](https://github.com/autonops/infraIQ){ .md-button }
+[Join the Beta](https://autonops.io/start.html){ .md-button .md-button--primary }
+[View on GitHub](https://github.com/autonops){ .md-button }
 
 ## Get Help
 
 - **Documentation**: You're here!
-- **GitHub Issues**: [Report bugs or request features](https://github.com/autonops/infraIQ/issues)
-- **Email**: [jason@autonops.io](mailto:jason@autonops.io)
+- **Email**: [jason@autonops.io](mailto:jason@autonops.io) — Report bugs, request features, or ask questions

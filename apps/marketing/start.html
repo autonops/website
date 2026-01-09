@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Free Trial - InfraIQ by Autonops</title>
+    <meta name="description" content="Start your free 30-day InfraIQ trial. Get your license key instantly via email.">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (systemDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg-alt: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --error: #ef4444;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --text: #f9fafb;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --bg-alt: #1f2937;
+            --border: #374151;
+            --success: #10b981;
+            --error: #f87171;
+            --card-bg: #1f2937;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 15px;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-light);
+        }
+
+        .sun-icon { display: none; }
+        .moon-icon { display: block; }
+        [data-theme="dark"] .sun-icon { display: block; }
+        [data-theme="dark"] .moon-icon { display: none; }
+
+        /* Main Content */
+        main {
+            padding: 80px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .signup-container {
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .signup-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .signup-box h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .signup-box .subtitle {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .trial-badge {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group label span {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            background: var(--bg);
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group input.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .submit-button:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .submit-button.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .submit-button.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .features-list {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .features-list h3 {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .features-list ul {
+            list-style: none;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .features-list li svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* Success State */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .success-state.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .success-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        .success-state h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .success-state p {
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .success-state .email-highlight {
+            background: var(--bg-alt);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin: 20px 0;
+            display: inline-block;
+        }
+
+        .next-steps {
+            background: var(--bg-alt);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .next-steps ol {
+            padding-left: 20px;
+        }
+
+        .next-steps li {
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .next-steps code {
+            background: var(--card-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+        }
+
+        .form-state {
+            display: block;
+        }
+
+        .form-state.hide {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copy {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .signup-box {
+                padding: 24px;
+            }
+            
+            footer {
+                position: static;
+            }
+            
+            main {
+                padding: 40px 0 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">auton<span>ops</span></a>
+            <div class="nav-links">
+                <a href="/#product">Product</a>
+                <a href="/pricing.html">Pricing</a>
+                <a href="/docs/">Docs</a>
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2"></line><line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2"></line><line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2"></line></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="signup-container">
+            <div class="signup-box">
+                <!-- Form State -->
+                <div class="form-state" id="formState">
+                    <div style="text-align: center;">
+                        <span class="trial-badge">🚀 30-Day Free Trial</span>
+                    </div>
+                    <h1>Start Your Free Trial</h1>
+                    <p class="subtitle">Get your license key instantly via email. No credit card required.</p>
+
+                    <form id="trialForm" onsubmit="return submitForm(event)">
+                        <div class="form-group">
+                            <label>Work Email <span>(required)</span></label>
+                            <input type="email" name="email" id="email" required placeholder="you@company.com">
+                            <div id="emailError" class="error-message"></div>
+                        </div>
+
+                        <button type="submit" class="submit-button" id="submitBtn">
+                            Get Your Trial Key
+                        </button>
+                    </form>
+
+                    <div class="features-list">
+                        <h3>Your trial includes:</h3>
+                        <ul>
+                            <li>
+                                <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                All 7 InfraIQ tools
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                30 runs per day
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                Full documentation access
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                Email support
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Success State -->
+                <div class="success-state" id="successState">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                    </div>
+                    <h2>Check Your Email!</h2>
+                    <p>We've sent your trial license key to:</p>
+                    <div class="email-highlight" id="successEmail">you@company.com</div>
+                    <p style="font-size: 14px;">Don't forget to check your spam folder.</p>
+
+                    <div class="next-steps">
+                        <h3>Next Steps:</h3>
+                        <ol>
+                            <li>Check your email for the license key</li>
+                            <li>Download InfraIQ:
+                                <br><code>curl -sSL https://install.autonops.io | bash</code>
+                            </li>
+                            <li>Activate your trial:
+                                <br><code>infraiq activate YOUR-LICENSE-KEY</code>
+                            </li>
+                            <li>Start using InfraIQ:
+                                <br><code>infraiq doctor</code>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-copy">© 2025 Autonops. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/security.html">Security</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="mailto:support@autonops.io">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Personal email domains to block
+        const blockedDomains = [
+            'gmail.com', 'googlemail.com',
+            'yahoo.com', 'yahoo.co.uk', 'ymail.com',
+            'hotmail.com', 'hotmail.co.uk', 'outlook.com', 'live.com', 'msn.com',
+            'icloud.com', 'me.com', 'mac.com',
+            'aol.com',
+            'protonmail.com', 'proton.me',
+            'zoho.com',
+            'mail.com', 'email.com',
+            'gmx.com', 'gmx.net',
+            'yandex.com', 'yandex.ru',
+            'qq.com', '163.com', '126.com',
+            'tutanota.com',
+            'fastmail.com',
+            'hey.com'
+        ];
+
+        function generateInstallationId() {
+            return 'web-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function validateEmail() {
+            const emailInput = document.getElementById('email');
+            const errorDiv = document.getElementById('emailError');
+            const email = emailInput.value.toLowerCase().trim();
+            
+            if (!email) {
+                emailInput.classList.add('error');
+                errorDiv.textContent = 'Email is required';
+                errorDiv.classList.add('show');
+                return false;
+            }
+
+            const domain = email.split('@')[1];
+            
+            if (blockedDomains.includes(domain)) {
+                emailInput.classList.add('error');
+                errorDiv.textContent = 'Please use your work email address';
+                errorDiv.classList.add('show');
+                return false;
+            }
+            
+            emailInput.classList.remove('error');
+            errorDiv.classList.remove('show');
+            return true;
+        }
+
+        async function submitForm(event) {
+            event.preventDefault();
+            
+            if (!validateEmail()) {
+                return false;
+            }
+
+            const email = document.getElementById('email').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('emailError');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            errorDiv.classList.remove('show');
+
+            try {
+                const response = await fetch('https://license.autonops.io/trial/request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        installation_id: generateInstallationId()
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success - show success state
+                    document.getElementById('formState').classList.add('hide');
+                    document.getElementById('successState').classList.add('show');
+                    document.getElementById('successEmail').textContent = email;
+                } else {
+                    // Error from server
+                    errorDiv.textContent = data.detail || 'Something went wrong. Please try again.';
+                    errorDiv.classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'Unable to connect. Please try again later.';
+                errorDiv.classList.add('show');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+
+            return false;
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+
+        // Validate on blur
+        document.getElementById('email').addEventListener('blur', validateEmail);
+    </script>
+</body>
+</html>

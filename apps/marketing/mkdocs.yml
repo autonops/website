@@ -3,8 +3,8 @@ site_url: https://autonops.io/docs/
 site_description: Complete documentation for InfraIQ - the DevOps automation platform
 site_author: Jason Boykin
 
-repo_name: autonops/infraIQ
-repo_url: https://github.com/autonops/infraIQ
+repo_name: autonops
+repo_url: https://github.com/autonops
 
 theme:
   name: material
@@ -74,10 +74,7 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
-  - pymdownx.magiclink:
-      repo_url_shorthand: true
-      user: autonops
-      repo: infraIQ
+  - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences:
@@ -122,7 +119,7 @@ extra:
   homepage: https://autonops.io
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/autonops/infraIQ
+      link: https://github.com/autonops
     - icon: fontawesome/brands/linkedin
       link: https://linkedin.com/in/JasonBoykin2018
   generator: false
