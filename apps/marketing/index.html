@@ -72,6 +72,7 @@
             padding: 20px 0;
             border-bottom: 1px solid var(--border);
             background: var(--bg);
+            position: relative;
         }
 
         nav .container {
@@ -106,6 +107,37 @@
 
         nav a:hover {
             color: var(--primary);
+        }
+
+        /* Hamburger Menu Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text);
+            margin: 5px 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* Theme Toggle */
@@ -429,14 +461,22 @@
             font-size: 14px;
         }
 
-        /* Responsive */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+
             .hero h1 {
                 font-size: 36px;
             }
 
             .hero .tagline {
                 font-size: 20px;
+            }
+
+            .hero p {
+                font-size: 16px;
             }
 
             .stats {
@@ -447,17 +487,101 @@
                 font-size: 36px;
             }
 
-            nav .container {
-                flex-direction: column;
-                gap: 16px;
+            .section-title {
+                font-size: 28px;
             }
 
-            nav a {
-                margin-left: 16px;
+            .section-subtitle {
+                font-size: 16px;
+            }
+
+            .product, .background, .signup {
+                padding: 60px 0;
+            }
+
+            .signup-box {
+                padding: 24px;
+            }
+
+            /* Mobile Navigation */
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                border-bottom: 1px solid var(--border);
+                flex-direction: column;
+                padding: 16px 24px;
+                gap: 0;
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                margin-left: 0;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+                display: block;
+            }
+
+            .nav-links a:last-of-type {
+                border-bottom: none;
             }
 
             .theme-toggle {
-                margin-left: 16px;
+                margin-left: 0;
+                margin-top: 12px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Footer Mobile */
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .footer-links a {
+                margin-left: 0;
+                padding: 4px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero .tagline {
+                font-size: 18px;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credentials {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -466,12 +590,17 @@
     <nav>
         <div class="container">
             <a href="/" class="logo">auton<span>ops</span></a>
-            <div class="nav-links">
+            <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
                 <a href="#product">Product</a>
                 <a href="#background">About</a>
                 <a href="/docs/">Docs</a>
                 <a href="https://demo.autonops.io" target="_blank">Demo</a>
-                <a href="https://app.autonops.io/sign-up">Join Beta</a>
+                <a href="/start.html">Join Beta</a>
                 <a href="/pricing.html">Pricing</a>
                 <a href="https://app.autonops.io/dashboard">Dashboard</a>
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -492,7 +621,7 @@
                 A complete DevOps automation platform built from real-world experience 
                 scaling infrastructure at Spotify, Capital One, and Point Digital Finance.
             </p>
-            <a href="https://app.autonops.io/sign-up" class="cta-button">Join the Beta</a>
+            <a href="/start.html" class="cta-button">Join the Beta</a>
         </div>
     </section>
 
@@ -621,13 +750,13 @@
             <div class="footer-links">
                 <a href="/security.html">Security</a>
                 <a href="/privacy.html">Privacy</a>
-                <a href="/cdn-cgi/l/email-protection#026863716d6c426377766d6c6d72712c6b6d"><span class="__cf_email__" data-cfemail="aac0cbd9c5c4eacbdfdec5c4c5dad984c3c5">[email&#160;protected]</span></a>
+                <a href="mailto:jason@autonops.io">jason@autonops.io</a>
                 <a href="https://linkedin.com/in/JasonBoykin2018" target="_blank">LinkedIn</a>
             </div>
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // Personal email domains to block
         const blockedDomains = [
             'gmail.com', 'googlemail.com',
@@ -674,6 +803,23 @@
             html.setAttribute('data-theme', next);
             localStorage.setItem('theme', next);
         }
+
+        function toggleMenu() {
+            const menuBtn = document.querySelector('.menu-toggle');
+            const navLinks = document.getElementById('nav-links');
+            menuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                const menuBtn = document.querySelector('.menu-toggle');
+                const navLinks = document.getElementById('nav-links');
+                menuBtn.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
     </script>
 </body>
 </html>
