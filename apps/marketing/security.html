@@ -187,27 +187,8 @@
             <h2>Architecture</h2>
             <p>InfraIQ is a command-line tool that runs entirely on your workstation. Here's what happens when you use InfraIQ:</p>
 
-            <div class="architecture-box">
-<pre>┌─────────────────────────────────────────────────────────────┐
-│                     Your Environment                         │
-│                                                              │
-│  ┌──────────────┐      ┌──────────────┐      ┌───────────┐  │
-│  │  InfraIQ CLI │ ───▶ │ Your Cloud   │ ───▶ │ Terraform │  │
-│  │  (local)     │      │ (AWS/GCP/etc)│      │ (local)   │  │
-│  └──────────────┘      └──────────────┘      └───────────┘  │
-│         │                                                    │
-│         ▼                                                    │
-│  ┌──────────────┐                                           │
-│  │ Anonymous    │ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ▶  │
-│  │ Telemetry    │                    (opt-out available)     │
-│  └──────────────┘                                           │
-└─────────────────────────────────────────────────────────────┘
-                               │
-                               ▼
-                    ┌──────────────────┐
-                    │  Autonops        │
-                    │  (telemetry only)│
-                    └──────────────────┘</pre>
+            <div class="architecture-box" style="background: transparent; border: none;">
+                <img src="/images/infraiq-architecture.svg" alt="InfraIQ Architecture Diagram" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
             </div>
 
             <h2>What We Don't Have Access To</h2>

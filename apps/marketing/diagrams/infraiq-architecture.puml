@@ -1,0 +1,46 @@
+@startuml infraiq-architecture
+
+' Dark theme styling
+skinparam backgroundColor #0f172a
+skinparam defaultFontColor #e2e8f0
+skinparam defaultFontName monospace
+skinparam defaultFontSize 14
+
+skinparam rectangle {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #e2e8f0
+  RoundCorner 4
+}
+
+skinparam arrow {
+  Color #e2e8f0
+}
+
+skinparam note {
+  BackgroundColor #1e293b
+  BorderColor #475569
+  FontColor #94a3b8
+}
+
+' Main environment container
+rectangle "Your Environment" as env #1e293b {
+  rectangle "InfraIQ CLI\n(local)" as cli #1e293b
+  rectangle "Your Cloud\n(AWS/GCP/etc)" as cloud #1e293b  
+  rectangle "Terraform\n(local)" as tf #1e293b
+  rectangle "Anonymous\nTelemetry" as telem #1e293b
+  
+  note right of telem #1e293b : (opt-out available)
+}
+
+rectangle "Autonops\n(telemetry only)" as autonops #1e293b
+
+' Main flow
+cli -right-> cloud
+cloud -right-> tf
+
+' Telemetry flow  
+cli -down-> telem
+telem -down-> autonops
+
+@enduml
