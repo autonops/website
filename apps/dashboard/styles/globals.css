@@ -254,6 +254,10 @@
     @apply hover:bg-[--bg-alt] hover:text-[--text];
   }
   
+
+  [data-theme="dark"] .sidebar-link:hover {
+    color: #f9fafb;
+  }
   .sidebar-link.active {
     @apply bg-[--bg-alt] text-[--primary];
     @apply font-medium;
