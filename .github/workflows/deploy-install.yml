@@ -1,0 +1,56 @@
+name: Deploy Install Site
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/install/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GCS_BUCKET: infraiq-install
+  GCP_PROJECT: intense-grove-451422-s6
+  WORKLOAD_IDENTITY_PROVIDER: projects/955610230725/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+  SERVICE_ACCOUNT: github-actions@intense-grove-451422-s6.iam.gserviceaccount.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
+          export_environment_variables: true
+          create_credentials_file: true
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+
+      - name: Deploy to GCS
+        run: |
+          gcloud storage cp apps/install/index.html gs://${{ env.GCS_BUCKET }}/
+          gcloud storage cp apps/install/install.sh gs://${{ env.GCS_BUCKET }}/
+          
+          echo "Deployed to gs://${{ env.GCS_BUCKET }}/"
+
+      - name: Invalidate CDN cache
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache infraiq-install-url-map \
+            --path="/*" \
+            --global --async
+          
+          echo "CDN cache invalidation started"
