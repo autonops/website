@@ -26,16 +26,16 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { emoji: "🚀", name: "MigrateIQ", desc: "Automated cloud migration from Heroku, AWS, GCP, or Azure." },
-              { emoji: "🔍", name: "VerifyIQ", desc: "Infrastructure verification. Security scanning, cost optimization, drift detection." },
-              { emoji: "📝", name: "CodifyIQ", desc: "Transform existing cloud infrastructure into Infrastructure as Code." },
-              { emoji: "🔒", name: "ComplyIQ", desc: "Continuous compliance automation. SOC2, ISO27001, HIPAA evidence collection.", href: "/complyiq/" },
-              { emoji: "🗄️", name: "DataIQ", desc: "Zero-downtime database migrations with self-healing and automated cutover." },
-              { emoji: "🔑", name: "SecureIQ", desc: "Secret discovery and management. Find, classify, and map all secrets." },
-              { emoji: "🎭", name: "Tessera", desc: "AI-powered monolith to microservices transformation." },
+              { emoji: "🚀", name: "MigrateIQ", desc: "Automated cloud migration from Heroku, AWS, GCP, or Azure.", href: "/migrateiq/", color: "blue" },
+              { emoji: "🔍", name: "VerifyIQ", desc: "Infrastructure verification. Security scanning, cost optimization, drift detection.", href: "/verifyiq/", color: "amber" },
+              { emoji: "📝", name: "CodifyIQ", desc: "Transform existing cloud infrastructure into Infrastructure as Code.", href: "/codifyiq/", color: "violet" },
+              { emoji: "🔒", name: "ComplyIQ", desc: "Continuous compliance automation. SOC2, ISO27001, HIPAA evidence collection.", href: "/complyiq/", color: "emerald" },
+              { emoji: "🗄️", name: "DataIQ", desc: "Zero-downtime database migrations with self-healing and automated cutover.", href: "/dataiq/", color: "cyan" },
+              { emoji: "🔑", name: "SecureIQ", desc: "Secret discovery and management. Find, classify, and map all secrets.", href: "/secureiq/", color: "rose" },
+              { emoji: "🎭", name: "Tessera", desc: "AI-powered monolith to microservices transformation.", href: "/tessera/", color: "fuchsia" },
             ].map((tool) => (
-              <a key={tool.name} href={tool.href || "#"} className="block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-blue-500 dark:hover:border-blue-500 transition-colors">
-                <h3 className="text-lg font-semibold mb-2">{tool.emoji} {tool.name}</h3>
+              <a key={tool.name} href={tool.href} className={`block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-${tool.color}-500 dark:hover:border-${tool.color}-500 transition-colors group`}>
+                <h3 className={`text-lg font-semibold mb-2 group-hover:text-${tool.color}-600 dark:group-hover:text-${tool.color}-400 transition-colors`}>{tool.emoji} {tool.name}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">{tool.desc}</p>
               </a>
             ))}
