@@ -44,7 +44,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Turn ClickOps<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-400 dark:to-purple-400">Into GitOps</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               CodifyIQ discovers your manually-created cloud resources and generates production-ready Terraform with import scripts. No disruption to running infrastructure.
             </p>
             <div className="flex flex-wrap gap-4">

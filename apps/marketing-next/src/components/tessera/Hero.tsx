@@ -43,7 +43,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Break Up Your<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 to-purple-600 dark:from-fuchsia-400 dark:to-purple-400">Monolith with AI</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               Tessera uses AI to analyze your codebase and recommend microservice boundaries. Domain-driven design principles meet LLM intelligence.
             </p>
             <div className="flex flex-wrap gap-4">

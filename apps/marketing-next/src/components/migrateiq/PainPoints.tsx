@@ -19,7 +19,7 @@ export default function PainPoints() {
             <div key={i} className="group relative p-8 rounded-2xl bg-gray-50 dark:bg-gradient-to-b dark:from-gray-800/50 dark:to-gray-900/50 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all">
               <span className="text-4xl mb-6 block">{point.icon}</span>
               <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{point.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{point.description}</p>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{point.description}</p>
             </div>
           ))}
         </div>

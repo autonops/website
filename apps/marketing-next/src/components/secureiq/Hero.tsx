@@ -43,7 +43,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Find Every Secret<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600 dark:from-rose-400 dark:to-pink-400">Before You Migrate</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               SecureIQ discovers all your secrets by location and type — without ever reading the values. Map dependencies, generate migration checklists, and validate compliance.
             </p>
             <div className="flex flex-wrap gap-4">

@@ -46,7 +46,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Migrate in Hours<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">Not Months</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               MigrateIQ scans your infrastructure and generates production-ready Terraform. Zero manual mapping. Zero missed resources. Zero downtime migrations.
             </p>
             <div className="flex flex-wrap gap-4">

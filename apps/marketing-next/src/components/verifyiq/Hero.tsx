@@ -43,7 +43,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Know Your Infra<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-400">Before It Breaks</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               VerifyIQ continuously scans your cloud infrastructure for security issues, cost waste, configuration drift, and compliance gaps.
             </p>
             <div className="flex flex-wrap gap-4">

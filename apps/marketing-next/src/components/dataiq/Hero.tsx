@@ -44,7 +44,7 @@ export default function Hero() {
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
               Zero Downtime<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-600 dark:from-cyan-400 dark:to-teal-400">Database Migrations</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-lg">
+            <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-lg">
               DataIQ handles the hard parts of database migration: continuous replication, automatic health checks, and zero-downtime cutover with instant rollback.
             </p>
             <div className="flex flex-wrap gap-4">
