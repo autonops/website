@@ -2,7 +2,7 @@
 
 Monorepo containing all Autonops web properties:
 
-- **Marketing Site** (autonops.io) — Landing page, pricing, docs
+- **Marketing Site** (autonops.io) — Next.js landing pages, product pages, pricing
 - **Dashboard** (app.autonops.io) — Web UI for InfraIQ
 - **API** (api.autonops.io) — Backend services for dashboard and CLI sync
 
@@ -13,13 +13,23 @@ Monorepo containing all Autonops web properties:
 git clone https://github.com/autonops/website.git
 cd website
 
-# Start everything locally
-docker-compose up
+# Start marketing site locally
+cd apps/marketing-next
+npm install
+npm run dev
+# Open http://localhost:3000
 
-# Or start individual services
-docker-compose up marketing    # http://localhost:8080
-docker-compose up api          # http://localhost:8000
-docker-compose up dashboard    # http://localhost:3000
+# Start dashboard locally
+cd apps/dashboard
+npm install
+npm run dev
+# Open http://localhost:3001
+
+# Start API locally
+cd apps/api
+pip install -r requirements.txt
+uvicorn main:app --reload
+# Open http://localhost:8000
 ```
 
 ## Structure
@@ -27,7 +37,7 @@ docker-compose up dashboard    # http://localhost:3000
 ```
 website/
 ├── apps/
-│   ├── marketing/        # Static HTML + MkDocs (→ autonops.io)
+│   ├── marketing-next/   # Next.js 14 app (→ autonops.io)
 │   ├── dashboard/        # Next.js app (→ app.autonops.io)
 │   └── api/              # FastAPI backend (→ api.autonops.io)
 │
@@ -35,8 +45,7 @@ website/
 │   └── design-tokens/    # Shared colors, spacing, fonts
 │
 ├── .github/workflows/    # CI/CD pipelines
-├── docker-compose.yml    # Local development
-└── deploy.sh             # Manual deployment script
+└── docker-compose.yml    # Local development
 ```
 
 ## Deployments
@@ -45,17 +54,18 @@ All deployments are automated via GitHub Actions on push to `main`.
 
 | App | URL | Hosting | Trigger |
 |-----|-----|---------|---------|
-| Marketing | autonops.io | GCP Cloud Storage + LB | Push to `apps/marketing/**` |
-| Docs | autonops.io/docs | GitHub Pages | Push to `apps/marketing/docs/**` |
+| Marketing | autonops.io | Vercel | Push to `apps/marketing-next/**` |
 | Dashboard | app.autonops.io | Vercel | Push to `apps/dashboard/**` |
 | API | api.autonops.io | Cloud Run + Cloud SQL | Push to `apps/api/**` |
+| Docs | docs.autonops.io | GitHub Pages | Push to docs |
 
 ### CI/CD Workflows
 
-- `.github/workflows/deploy-marketing.yml` — Marketing site to GCP
 - `.github/workflows/deploy-dashboard.yml` — Dashboard to Vercel
 - `.github/workflows/deploy-api.yml` — API to Cloud Run (preserves env vars)
 - `.github/workflows/deploy-docs.yml` — Docs to GitHub Pages
+
+*Note: Marketing site deploys automatically via Vercel Git integration.*
 
 ## Architecture
 
@@ -65,13 +75,63 @@ All deployments are automated via GitHub Actions on push to `main`.
 │   (Marketing)   │     │   (Dashboard)   │     │     (API)       │
 └────────┬────────┘     └────────┬────────┘     └────────┬────────┘
          │                       │                       │
-    GCP Bucket              Vercel                 Cloud Run
-    + CDN + LB                 │                       │
-                               │                       │
-                               └───────────┬───────────┘
-                                           │
-                                      Cloud SQL
-                                     (PostgreSQL)
+      Vercel                  Vercel                 Cloud Run
+         │                       │                       │
+         │                       └───────────┬───────────┘
+         │                                   │
+         │                              Cloud SQL
+         │                             (PostgreSQL)
+         │
+    ┌────┴────┐
+    │  Pages  │
+    ├─────────┤
+    │ /                (Homepage)
+    │ /products/       (All 7 tools)
+    │ /migrateiq/      (MigrateIQ)
+    │ /verifyiq/       (VerifyIQ)
+    │ /codifyiq/       (CodifyIQ)
+    │ /complyiq/       (ComplyIQ)
+    │ /dataiq/         (DataIQ)
+    │ /secureiq/       (SecureIQ)
+    │ /tessera/        (Tessera)
+    │ /pricing/        (Pricing)
+    │ /start/          (Beta signup)
+    └─────────┘
+```
+
+## Marketing Site
+
+The marketing site is a Next.js 14 application with:
+
+- **Dark/Light Theme** — System preference detection + manual toggle
+- **Animated Components** — Terminal animations, interactive calculators
+- **7 Product Pages** — Dedicated page for each InfraIQ tool
+- **Responsive Design** — Mobile-first with Tailwind CSS
+
+### Tech Stack
+
+- Next.js 14.2.21
+- React 18
+- Tailwind CSS 3.4
+- TypeScript 5
+
+### Local Development
+
+```bash
+cd apps/marketing-next
+npm install
+npm run dev
+# Open http://localhost:3000
+```
+
+### Deployment
+
+Marketing site deploys automatically to Vercel when changes are pushed to `main`.
+
+```bash
+# Manual deployment
+cd apps/marketing-next
+vercel --prod
 ```
 
 ## API Authentication
@@ -123,23 +183,6 @@ curl -X POST https://api.autonops.io/api/scans \
 
 ## Development
 
-### Marketing Site
-
-```bash
-cd apps/marketing
-python3 -m http.server 8000
-# Open http://localhost:8000
-```
-
-### Documentation
-
-```bash
-cd apps/marketing
-pip install -r requirements.txt
-mkdocs serve
-# Open http://localhost:8000/docs/
-```
-
 ### Dashboard
 
 ```bash
@@ -169,14 +212,18 @@ uvicorn main:app --reload
 
 ## Environment Variables
 
+### Marketing Site (Vercel)
+
+No environment variables required — static site.
+
 ### Dashboard (Vercel)
 
 | Variable | Description |
 |----------|-------------|
 | `INFRAIQ_BACKEND_API_KEY` | API key for backend requests |
 | `NEXT_PUBLIC_API_URL` | API base URL (https://api.autonops.io) |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key (auth disabled) |
-| `CLERK_SECRET_KEY` | Clerk secret key (auth disabled) |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key |
+| `CLERK_SECRET_KEY` | Clerk secret key |
 
 ### API (Cloud Run)
 
@@ -194,8 +241,18 @@ uvicorn main:app --reload
 | Cloud Run | infraiq-api | us-central1 |
 | Cloud SQL | infraiq-db | PostgreSQL 15, db-f1-micro |
 | VPC Connector | infraiq-connector | 10.9.0.0/28 |
-| Load Balancer | autonops-website-ip | 34.149.4.16 |
-| Storage | autonops-website | Marketing site |
+
+*Note: The GCP Cloud Storage bucket, Load Balancer, and CDN previously used for the marketing site have been deprecated in favor of Vercel.*
+
+## DNS Configuration (Cloudflare)
+
+| Type | Name | Content | Notes |
+|------|------|---------|-------|
+| A | autonops.io | 216.198.79.1 | Vercel |
+| CNAME | www | cname.vercel-dns.com | Vercel |
+| A | app | 34.149.4.16 | Dashboard (Vercel) |
+| A | api | (Cloud Run IP) | API |
+| A | telemetry | (VM IP) | Wraith telemetry |
 
 ## Useful Commands
 
@@ -225,14 +282,6 @@ gcloud sql connect infraiq-db --user=infraiq --database=infraiq
 curl https://api.autonops.io/health
 ```
 
-### CDN Cache
-
-```bash
-# Purge marketing site cache
-gcloud compute url-maps invalidate-cdn-cache autonops-url-map \
-  --path="/*" --global
-```
-
 ## Contact
 
 **Jason Boykin**  
@@ -241,4 +290,4 @@ gcloud compute url-maps invalidate-cdn-cache autonops-url-map \
 
 ---
 
-© 2025 Autonops. All rights reserved.
+© 2026 Autonops. All rights reserved.
