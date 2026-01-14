@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const terminalLines = [
   { text: "$ infraiq migrate scan heroku --app production", type: "command", delay: 0 },
@@ -15,14 +16,25 @@ const terminalLines = [
   { text: "→ Migration ready. Run 'terraform apply' to deploy.", type: "hint", delay: 4600 },
 ];
 
-const tools = [
-  { emoji: "🚀", name: "MigrateIQ", desc: "Automated cloud migration from Heroku, AWS, GCP, or Azure.", href: "/migrateiq/" },
-  { emoji: "🔍", name: "VerifyIQ", desc: "Infrastructure verification. Security scanning, cost optimization, drift detection.", href: "/verifyiq/" },
-  { emoji: "📝", name: "CodifyIQ", desc: "Transform existing cloud infrastructure into Infrastructure as Code.", href: "/codifyiq/" },
-  { emoji: "🔒", name: "ComplyIQ", desc: "Continuous compliance automation. SOC2, ISO27001, HIPAA evidence collection.", href: "/complyiq/" },
-  { emoji: "🗄️", name: "DataIQ", desc: "Zero-downtime database migrations with self-healing and automated cutover.", href: "/dataiq/" },
-  { emoji: "🔑", name: "SecureIQ", desc: "Secret discovery and management. Find, classify, and map all secrets.", href: "/secureiq/" },
-  { emoji: "🎭", name: "Tessera", desc: "AI-powered monolith to microservices transformation.", href: "/tessera/" },
+const featuredTools = [
+  { 
+    emoji: "🚀", 
+    name: "MigrateIQ", 
+    desc: "Migrate from Heroku to AWS in hours. Automatic resource discovery and Terraform generation.", 
+    href: "/migrateiq/" 
+  },
+  { 
+    emoji: "🔒", 
+    name: "ComplyIQ", 
+    desc: "Automated SOC2, ISO27001, and HIPAA evidence collection. 2 weeks → 2 hours.", 
+    href: "/complyiq/" 
+  },
+  { 
+    emoji: "🎭", 
+    name: "Tessera", 
+    desc: "AI-powered monolith decomposition. Find microservice boundaries intelligently.", 
+    href: "/tessera/" 
+  },
 ];
 
 export default function HomePage() {
@@ -64,8 +76,8 @@ export default function HomePage() {
                 Migrate from Heroku to AWS in hours, not months. A complete DevOps automation platform built from real-world experience scaling infrastructure at Spotify, Capital One, and Point Digital Finance.
               </p>
               <div className="flex flex-wrap gap-4">
-                <a href="/start/" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white dark:text-black font-semibold rounded-lg transition-all hover:scale-105">Join the Beta</a>
-                <a href="#product" className="px-8 py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">See What We Do →</a>
+                <Link href="/start/" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white dark:text-black font-semibold rounded-lg transition-all hover:scale-105">Join the Beta</Link>
+                <Link href="/products/" className="px-8 py-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">See All Tools →</Link>
               </div>
             </div>
             
@@ -99,7 +111,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* What We Do Section */}
+      {/* What We Do Section - Simplified */}
       <section id="product" className="py-24 relative bg-white dark:bg-slate-900/50">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-center mb-16">
@@ -125,10 +137,10 @@ export default function HomePage() {
             </div>
           </div>
           
-          {/* Tool Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool) => (
-              <a 
+          {/* Featured Tools - Just 3 */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {featuredTools.map((tool) => (
+              <Link 
                 key={tool.name} 
                 href={tool.href} 
                 className="group p-6 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all hover:shadow-lg hover:shadow-blue-500/5"
@@ -141,8 +153,21 @@ export default function HomePage() {
                 <div className="mt-4 text-blue-600 dark:text-blue-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                   Learn more →
                 </div>
-              </a>
+              </Link>
             ))}
+          </div>
+
+          {/* See All Tools CTA */}
+          <div className="text-center">
+            <Link 
+              href="/products/" 
+              className="inline-flex items-center gap-2 px-6 py-3 text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            >
+              See all 7 tools
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -170,8 +195,8 @@ export default function HomePage() {
               <p className="text-gray-600 dark:text-gray-400 text-lg mb-2">Join 35+ companies already planning their migration.</p>
               <p className="text-gray-500 dark:text-gray-500 text-sm mb-8">30-day free trial • No credit card required</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/start/" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white dark:text-black font-semibold rounded-lg transition-all hover:scale-105">Start Free Trial</a>
-                <a href="mailto:jason@autonops.io" className="px-8 py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-white dark:hover:bg-white/5 transition-colors">Schedule a Demo →</a>
+                <Link href="/start/" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white dark:text-black font-semibold rounded-lg transition-all hover:scale-105">Start Free Trial</Link>
+                <Link href="mailto:jason@autonops.io" className="px-8 py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-white dark:hover:bg-white/5 transition-colors">Schedule a Demo →</Link>
               </div>
             </div>
           </div>

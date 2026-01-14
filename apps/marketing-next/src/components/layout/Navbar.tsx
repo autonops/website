@@ -5,67 +5,96 @@ import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
-  { href: "/#product", label: "Product" },
+  { href: "/products/", label: "Products" },
   { href: "/#background", label: "About" },
-  { href: "/docs/", label: "Docs" },
+  { href: "https://docs.autonops.io", label: "Docs", external: true },
   { href: "/pricing/", label: "Pricing" },
   { href: "/start/", label: "Join Beta" },
+  { href: "https://github.com/autonops/infraIQ", label: "GitHub", external: true },
 ];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-      <div className="max-w-[1100px] mx-auto px-6 py-5 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-gray-800 dark:text-gray-50">
-          auton<span className="text-blue-600 dark:text-blue-500">ops</span>
-        </Link>
+    <nav className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+      <div className="max-w-[1200px] mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              auton<span className="text-blue-600 dark:text-blue-400">ops</span>
+            </span>
+          </Link>
 
-        <div className="hidden md:flex items-center">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 ml-6 text-[15px] transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <a
-            href="https://github.com/autonops/infraIQ"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 ml-6 text-[15px] transition-colors"
-          >
-            GitHub
-          </a>
-          <div className="ml-6">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
             <ThemeToggle />
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="flex md:hidden items-center gap-4">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-gray-600 dark:text-gray-400"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
 
-        <button
-          className="md:hidden p-2 z-50"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          <div className={`w-6 h-0.5 bg-gray-800 dark:bg-gray-50 mb-1.5 transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <div className={`w-6 h-0.5 bg-gray-800 dark:bg-gray-50 mb-1.5 transition-all duration-300 ${isOpen ? "opacity-0" : ""}`} />
-          <div className={`w-6 h-0.5 bg-gray-800 dark:bg-gray-50 transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-        </button>
-      </div>
-
-      <div className={`md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 py-4" : "max-h-0"}`}>
-        <div className="px-6 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="text-gray-500 dark:text-gray-400">
-              {link.label}
-            </Link>
-          ))}
-          <a href="https://github.com/autonops/infraIQ" target="_blank" className="text-gray-500 dark:text-gray-400">GitHub</a>
-          <div className="pt-2"><ThemeToggle /></div>
-        </div>
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
+            <div className="flex flex-col gap-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
