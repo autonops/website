@@ -50,22 +50,46 @@ website/
 
 ## Deployments
 
-All deployments are automated via GitHub Actions on push to `main`.
+| App | URL | Hosting | Deploy Command |
+|-----|-----|---------|----------------|
+| Marketing | autonops.io | Vercel | `cd apps/marketing-next && vercel --prod` |
+| Dashboard | app.autonops.io | Vercel | `cd apps/dashboard && vercel --prod` |
+| API | api.autonops.io | Cloud Run | Push to `apps/api/**` triggers CI/CD |
+| Docs | docs.autonops.io | GitHub Pages | Push to docs triggers CI/CD |
 
-| App | URL | Hosting | Trigger |
-|-----|-----|---------|---------|
-| Marketing | autonops.io | Vercel | Push to `apps/marketing-next/**` |
-| Dashboard | app.autonops.io | Vercel | Push to `apps/dashboard/**` |
-| API | api.autonops.io | Cloud Run + Cloud SQL | Push to `apps/api/**` |
-| Docs | docs.autonops.io | GitHub Pages | Push to docs |
+### Deploying Marketing Site
+
+```bash
+cd /Users/jasonboykin/Documents/website-final/apps/marketing-next
+vercel --prod
+```
+
+### Deploying Dashboard
+
+```bash
+cd /Users/jasonboykin/Documents/website-final/apps/dashboard
+vercel --prod
+```
+
+### Deploying API
+
+The API deploys automatically via GitHub Actions when changes are pushed to `apps/api/**`.
+
+```bash
+# Manual deploy (if needed)
+cd apps/api
+gcloud run services update infraiq-api \
+  --region=us-central1 \
+  --project=intense-grove-451422-s6 \
+  --image=gcr.io/intense-grove-451422-s6/infraiq-api:latest
+```
 
 ### CI/CD Workflows
 
-- `.github/workflows/deploy-dashboard.yml` — Dashboard to Vercel
 - `.github/workflows/deploy-api.yml` — API to Cloud Run (preserves env vars)
 - `.github/workflows/deploy-docs.yml` — Docs to GitHub Pages
 
-*Note: Marketing site deploys automatically via Vercel Git integration.*
+*Note: Marketing site and Dashboard deploy via Vercel CLI or Git integration.*
 
 ## Architecture
 
@@ -126,10 +150,7 @@ npm run dev
 
 ### Deployment
 
-Marketing site deploys automatically to Vercel when changes are pushed to `main`.
-
 ```bash
-# Manual deployment
 cd apps/marketing-next
 vercel --prod
 ```
@@ -242,19 +263,32 @@ No environment variables required — static site.
 | Cloud SQL | infraiq-db | PostgreSQL 15, db-f1-micro |
 | VPC Connector | infraiq-connector | 10.9.0.0/28 |
 
-*Note: The GCP Cloud Storage bucket, Load Balancer, and CDN previously used for the marketing site have been deprecated in favor of Vercel.*
-
 ## DNS Configuration (Cloudflare)
 
 | Type | Name | Content | Notes |
 |------|------|---------|-------|
-| A | autonops.io | 216.198.79.1 | Vercel |
-| CNAME | www | cname.vercel-dns.com | Vercel |
-| A | app | 34.149.4.16 | Dashboard (Vercel) |
+| CNAME | autonops.io | cname.vercel-dns.com | Marketing (Vercel) |
+| CNAME | www | cname.vercel-dns.com | Marketing (Vercel) |
+| CNAME | app | cname.vercel-dns.com | Dashboard (Vercel) |
 | A | api | (Cloud Run IP) | API |
 | A | telemetry | (VM IP) | Wraith telemetry |
 
 ## Useful Commands
+
+### Vercel Deployments
+
+```bash
+# Deploy marketing site
+cd apps/marketing-next
+vercel --prod
+
+# Deploy dashboard
+cd apps/dashboard
+vercel --prod
+
+# List deployments
+vercel ls
+```
 
 ### API Deployment (Manual)
 
