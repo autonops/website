@@ -25,10 +25,10 @@ export default function PricingPage() {
             </span>
             <button
               onClick={() => setIsAnnual(!isAnnual)}
-              className={`w-14 h-7 rounded-full relative transition-colors ${isAnnual ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
+              className={`w-12 h-6 rounded-full relative transition-colors ${isAnnual ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
             >
               <span 
-                className={`absolute w-5 h-5 bg-white rounded-full top-1 transition-transform ${isAnnual ? 'translate-x-8' : 'translate-x-1'}`}
+                className={`absolute w-4 h-4 bg-white rounded-full top-1 left-1 transition-all duration-200 ${isAnnual ? 'translate-x-6' : 'translate-x-0'}`}
               />
             </button>
             <span className={`text-sm ${isAnnual ? 'text-gray-900 dark:text-white font-semibold' : 'text-gray-500 dark:text-gray-400'}`}>
