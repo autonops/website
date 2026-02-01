@@ -2,7 +2,7 @@
 
 Monorepo containing all Autonops web properties:
 
-- **Marketing Site** (autonops.io) — Next.js landing pages, product pages, pricing
+- **Marketing Site** (autonops.io) — Next.js 14 app in `apps/marketing-next/`
 - **Dashboard** (app.autonops.io) — Web UI for InfraIQ
 - **API** (api.autonops.io) — Backend services for dashboard and CLI sync
 
@@ -37,9 +37,10 @@ uvicorn main:app --reload
 ```
 website/
 ├── apps/
-│   ├── marketing-next/   # Next.js 14 app (→ autonops.io)
-│   ├── dashboard/        # Next.js app (→ app.autonops.io)
-│   └── api/              # FastAPI backend (→ api.autonops.io)
+│   ├── marketing-next/   # Next.js 14 marketing site (→ autonops.io)
+│   ├── dashboard/        # Next.js dashboard (→ app.autonops.io)
+│   ├── api/              # FastAPI backend (→ api.autonops.io)
+│   └── install/          # Install script hosting
 │
 ├── packages/
 │   └── design-tokens/    # Shared colors, spacing, fonts
@@ -60,14 +61,14 @@ website/
 ### Deploying Marketing Site
 
 ```bash
-cd /Users/jasonboykin/Documents/website-final/apps/marketing-next
+cd ~/Documents/website-final/apps/marketing-next
 vercel --prod
 ```
 
 ### Deploying Dashboard
 
 ```bash
-cd /Users/jasonboykin/Documents/website-final/apps/dashboard
+cd ~/Documents/website-final/apps/dashboard
 vercel --prod
 ```
 
@@ -125,12 +126,17 @@ gcloud run services update infraiq-api \
 
 ## Marketing Site
 
-The marketing site is a Next.js 14 application with:
+The marketing site is a **Next.js 14** application deployed to **Vercel**.
+
+**Location:** `apps/marketing-next/`
+
+### Features
 
 - **Dark/Light Theme** — System preference detection + manual toggle
 - **Animated Components** — Terminal animations, interactive calculators
 - **7 Product Pages** — Dedicated page for each InfraIQ tool
 - **Responsive Design** — Mobile-first with Tailwind CSS
+- **Google Analytics** — G-CKLHH71XSK
 
 ### Tech Stack
 

@@ -201,6 +201,16 @@
             color: var(--text-light);
             margin-top: 4px;
         }
+        .price-custom {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .price-note {
+            font-size: 14px;
+            color: var(--text-light);
+        }
         .cta-button {
             display: block;
             width: 100%;
@@ -251,6 +261,25 @@
         .features-list li.disabled::before {
             content: '—';
             color: var(--text-light);
+        }
+        .features-list li.section-header {
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        .features-list li.section-header::before {
+            content: '';
+        }
+        .coming-soon-badge {
+            display: inline-block;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
         }
 
         /* Value Comparison */
@@ -333,6 +362,13 @@
             font-size: 14px;
             color: var(--text-light);
         }
+        .faq-item p a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .faq-item p a:hover {
+            text-decoration: underline;
+        }
 
         /* CTA Section */
         .cta-section {
@@ -396,11 +432,11 @@
         <div class="container">
             <a href="/" class="logo">auton<span>ops</span></a>
             <div class="nav-links">
-                <a href="/#product">Product</a>
+                <a href="/#products">Products</a>
                 <a href="/#background">About</a>
                 <a href="/docs/">Docs</a>
-                <a href="https://demo.autonops.io" target="_blank">Demo</a>
                 <a href="/pricing.html">Pricing</a>
+                <a href="/#signup">Join Beta</a>
                 <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
                 <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
                     <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -412,8 +448,8 @@
 
     <section class="hero">
         <div class="container">
-            <h1>Simple, transparent pricing</h1>
-            <p>Start free, upgrade when you're ready. No hidden fees, no surprises.</p>
+            <h1>Choose Your DevOps Autopilot</h1>
+            <p>Save 20% with annual billing.</p>
         </div>
     </section>
 
@@ -427,72 +463,74 @@
             </div>
 
             <div class="pricing-grid">
-                <!-- Free Tier -->
+                <!-- Pro Tier -->
                 <div class="pricing-card">
-                    <h3>Free</h3>
-                    <p class="description">Get started and see the value</p>
+                    <h3>Pro</h3>
+                    <p class="description">Core migration & compliance toolkit</p>
                     <div class="price">
-                        <span class="amount">$0</span>
+                        <span class="amount monthly-price">$999</span>
+                        <span class="amount annual-price" style="display: none;">$799</span>
                         <span class="period">/month</span>
+                        <div class="annual-note annual-only" style="display: none;">Billed annually ($9,588/year)</div>
                     </div>
-                    <a href="/#signup" class="cta-button cta-secondary">Get Started</a>
+                    <a href="https://buy.stripe.com/test_dRm6oHdIjdqx0ih83gafS00" class="cta-button cta-secondary">Get Started</a>
                     <ul class="features-list">
-                        <li>VerifyIQ — scan only</li>
-                        <li>MigrateIQ — scan only</li>
-                        <li>See what needs to migrate</li>
-                        <li>Security vulnerability reports</li>
-                        <li>Community support</li>
-                        <li class="disabled">Generate Terraform</li>
-                        <li class="disabled">Execute migrations</li>
-                        <li class="disabled">Compliance tools</li>
+                        <li>MigrateIQ — Cloud migrations</li>
+                        <li>CodifyIQ — Infrastructure as Code</li>
+                        <li>VerifyIQ — Security scanning</li>
+                        <li>ComplyIQ — Compliance automation</li>
+                        <li>Generate production Terraform</li>
+                        <li>SOC2 evidence collection</li>
+                        <li>Slack support</li>
                     </ul>
                 </div>
 
-                <!-- Pro Tier -->
+                <!-- Team Tier -->
                 <div class="pricing-card featured">
                     <div class="popular-badge">Most Popular</div>
-                    <h3>Pro</h3>
-                    <p class="description">Full migration and compliance toolkit</p>
+                    <h3>Team</h3>
+                    <p class="description">Full toolkit</p>
                     <div class="price">
-                        <span class="amount monthly-price">$499</span>
-                        <span class="amount annual-price" style="display: none;">$399</span>
+                        <span class="amount monthly-price">$5,000</span>
+                        <span class="amount annual-price" style="display: none;">$4,000</span>
                         <span class="period">/month</span>
-                        <div class="annual-note annual-only" style="display: none;">Billed annually ($4,788/year)</div>
+                        <div class="annual-note annual-only" style="display: none;">Billed annually ($48,000/year)</div>
                     </div>
-                    <a href="https://buy.stripe.com/test_dRm6oHdIjdqx0ih83gafS00" class="cta-button cta-primary">Start Free Trial</a>
+                    <a href="https://buy.stripe.com/test_team_tier_link" class="cta-button cta-primary">Start Free Trial</a>
                     <ul class="features-list">
-                        <li>MigrateIQ — full access</li>
-                        <li>VerifyIQ — full access</li>
-                        <li>CodifyIQ — full access</li>
-                        <li>ComplyIQ — full access</li>
-                        <li>Generate production Terraform</li>
-                        <li>SOC2 evidence collection</li>
-                        <li>Email support</li>
-                        <li class="disabled">Database migrations</li>
-                        <li class="disabled">AI-powered decomposition</li>
+                        <li>MigrateIQ — Cloud migrations</li>
+                        <li>CodifyIQ — Infrastructure as Code</li>
+                        <li>VerifyIQ — Security scanning</li>
+                        <li>ComplyIQ — Compliance automation</li>
+                        <li>DataIQ — Zero-downtime DB migrations</li>
+                        <li>SecureIQ — Secret discovery & management</li>
+                        <li>Tessera — AI monolith decomposition</li>
+                        <li>Priority Slack support</li>
                     </ul>
                 </div>
 
                 <!-- Enterprise Tier -->
                 <div class="pricing-card">
                     <h3>Enterprise</h3>
-                    <p class="description">Complete platform with all 7 tools</p>
+                    <p class="description">All 7 tools + enterprise features</p>
                     <div class="price">
-                        <span class="amount monthly-price">$2,499</span>
-                        <span class="amount annual-price" style="display: none;">$1,999</span>
-                        <span class="period">/month</span>
-                        <div class="annual-note annual-only" style="display: none;">Billed annually ($23,988/year)</div>
+                        <p class="price-custom">Custom Pricing</p>
+                        <p class="price-note">Available Q2 2026</p>
                     </div>
-                    <a href="mailto:sales@autonops.io" class="cta-button cta-secondary">Contact Sales</a>
+                    <a href="mailto:jason@autonops.io?subject=Enterprise%20Inquiry" class="cta-button cta-secondary">Contact Sales</a>
                     <ul class="features-list">
-                        <li>Everything in Pro, plus:</li>
-                        <li>DataIQ — zero-downtime DB migrations</li>
-                        <li>SecureIQ — secret discovery</li>
+                        <li>MigrateIQ — Cloud migrations</li>
+                        <li>CodifyIQ — Infrastructure as Code</li>
+                        <li>VerifyIQ — Security scanning</li>
+                        <li>ComplyIQ — Compliance automation</li>
+                        <li>DataIQ — Zero-downtime DB migrations</li>
+                        <li>SecureIQ — Secret discovery & management</li>
                         <li>Tessera — AI monolith decomposition</li>
-                        <li>Priority support</li>
+                        <li class="section-header">Enterprise Features</li>
+                        <li>Kubernetes support</li>
                         <li>SSO / SAML</li>
+                        <li>Priority support</li>
                         <li>Dedicated onboarding</li>
-                        <li>Custom integrations</li>
                     </ul>
                 </div>
             </div>
@@ -527,7 +565,7 @@
                 </div>
                 <div class="comparison-row highlight">
                     <span class="alternative">InfraIQ Pro</span>
-                    <span class="cost">$4,788/year</span>
+                    <span class="cost">$9,588/year</span>
                 </div>
             </div>
         </div>
@@ -540,7 +578,7 @@
             <div class="faq-grid">
                 <div class="faq-item">
                     <h4>What's included in the free trial?</h4>
-                    <p>You get full access to Pro features for 30 days. No credit card required. After the trial, you can continue with the free tier or upgrade.</p>
+                    <p>You get full access to Team features for 30 days. No credit card required. After the trial, choose the plan that fits your needs.</p>
                 </div>
                 <div class="faq-item">
                     <h4>Can I switch plans later?</h4>
@@ -570,24 +608,42 @@
         <div class="container">
             <h2>Ready to automate your DevOps?</h2>
             <p>Start your free trial today. No credit card required.</p>
-            <a href="/#signup">Get Started Free</a>
+            <a href="/#signup">Start Free Trial</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <div class="footer-copy">© 2025 Autonops. All rights reserved.</div>
+            <div class="footer-copy">© 2026 Autonops. All rights reserved.</div>
             <div class="footer-links">
                 <a href="/security.html">Security</a>
                 <a href="/privacy.html">Privacy</a>
                 <a href="https://github.com/autonops/infraIQ" target="_blank">GitHub</a>
-                <a href="mailto:contact@autonops.io">Contact</a>
+                <a href="mailto:jason@autonops.io">Contact</a>
             </div>
         </div>
     </footer>
 
     <script>
-        let isAnnual = false;
+        let isAnnual = true;
+
+        // Initialize to annual on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.querySelector('.toggle-switch');
+            const monthlyLabel = document.querySelector('.monthly-label');
+            const annualLabel = document.querySelector('.annual-label');
+            const monthlyPrices = document.querySelectorAll('.monthly-price');
+            const annualPrices = document.querySelectorAll('.annual-price');
+            const annualNotes = document.querySelectorAll('.annual-only');
+            
+            toggle.classList.add('active');
+            monthlyLabel.classList.remove('active');
+            annualLabel.classList.add('active');
+            
+            monthlyPrices.forEach(el => el.style.display = 'none');
+            annualPrices.forEach(el => el.style.display = 'inline');
+            annualNotes.forEach(el => el.style.display = 'block');
+        });
 
         function toggleBilling() {
             isAnnual = !isAnnual;

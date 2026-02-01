@@ -11,6 +11,7 @@ const tools = [
     emoji: "🚀", 
     name: "MigrateIQ", 
     tagline: "Cloud Migration",
+    status: "Production Ready",
     desc: "Migrate from Heroku, AWS, GCP, or Azure in hours, not months. Automatic resource discovery, intelligent mapping, and production-ready Terraform generation.", 
     href: "/migrateiq/",
     color: "blue"
@@ -19,6 +20,7 @@ const tools = [
     emoji: "🔍", 
     name: "VerifyIQ", 
     tagline: "Infrastructure Verification",
+    status: "Production Ready",
     desc: "Continuous scanning for security issues, cost optimization opportunities, configuration drift, and compliance gaps. Know your infrastructure before it breaks.", 
     href: "/verifyiq/",
     color: "amber"
@@ -27,6 +29,7 @@ const tools = [
     emoji: "📝", 
     name: "CodifyIQ", 
     tagline: "Infrastructure as Code",
+    status: "Production Ready",
     desc: "Transform manually-created cloud resources into production-ready Terraform. ClickOps to GitOps without disrupting running infrastructure.", 
     href: "/codifyiq/",
     color: "violet"
@@ -35,6 +38,7 @@ const tools = [
     emoji: "🔒", 
     name: "ComplyIQ", 
     tagline: "Compliance Automation",
+    status: "Production Ready",
     desc: "Automated evidence collection for SOC2, ISO27001, and HIPAA. What used to take your team 2 weeks now takes 2 hours.", 
     href: "/complyiq/",
     color: "emerald"
@@ -43,6 +47,7 @@ const tools = [
     emoji: "🗄️", 
     name: "DataIQ", 
     tagline: "Database Migration",
+    status: "Production Ready",
     desc: "Zero-downtime database migrations with continuous replication, automatic health checks, and instant rollback. PostgreSQL, MySQL, Oracle, MongoDB.", 
     href: "/dataiq/",
     color: "cyan"
@@ -51,6 +56,7 @@ const tools = [
     emoji: "🔑", 
     name: "SecureIQ", 
     tagline: "Secret Management",
+    status: "Production Ready",
     desc: "Discover all secrets in your infrastructure without reading values. Map dependencies, generate migration checklists, and validate compliance.", 
     href: "/secureiq/",
     color: "rose"
@@ -59,6 +65,7 @@ const tools = [
     emoji: "🎭", 
     name: "Tessera", 
     tagline: "Monolith Decomposition",
+    status: "Production Ready",
     desc: "AI-powered analysis to identify microservice boundaries in your codebase. Domain-driven design principles meet LLM intelligence.", 
     href: "/tessera/",
     color: "fuchsia"
@@ -99,12 +106,15 @@ export default function ProductsPage() {
                 <div className="flex items-start gap-4">
                   <span className="text-4xl">{tool.emoji}</span>
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <h2 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {tool.name}
                       </h2>
                       <span className="text-xs font-medium px-2 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
                         {tool.tagline}
+                      </span>
+                      <span className="text-xs font-semibold px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400">
+                        {tool.status}
                       </span>
                     </div>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">

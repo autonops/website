@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 const navLinks = [
   { href: "/products/", label: "Products" },
-  { href: "/#background", label: "About" },
+  { href: "/about/", label: "About" },
   { href: "https://docs.autonops.io", label: "Docs", external: true },
   { href: "/pricing/", label: "Pricing" },
   { href: "/start/", label: "Join Beta" },
