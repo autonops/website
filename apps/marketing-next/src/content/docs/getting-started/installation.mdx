@@ -1,0 +1,272 @@
+# Installation
+
+InfraIQ can be installed via Docker (recommended) or the install script.
+
+## Option 1: Docker (Recommended)
+
+Docker provides a consistent, isolated environment with no dependency conflicts.
+
+### Prerequisites
+
+- **Docker** — [Install Docker](https://docs.docker.com/get-docker/)
+
+### Install
+
+```bash
+# Pull the image
+docker pull autonops/infraiq:latest
+
+# Create persistent volume for configuration
+docker volume create infraiq-data
+```
+
+### Set Up Aliases
+
+Add to your `~/.zshrc` or `~/.bashrc`:
+
+```bash
+# InfraIQ Docker aliases
+alias infraiq='docker run --rm -v $(pwd):/workspace -v ~/.aws:/home/infraiq/.aws:ro -v infraiq-data:/home/infraiq/.infraiq autonops/infraiq'
+alias verify='infraiq verify'
+alias codify='infraiq codify'
+alias migrate='infraiq migrate'
+alias complyiq='infraiq complyiq'
+alias dataiq='infraiq dataiq'
+alias secureiq='infraiq secureiq'
+alias tessera='infraiq tessera'
+```
+
+Then reload your shell:
+
+```bash
+source ~/.zshrc  # or source ~/.bashrc
+```
+
+### Verify Installation
+
+```bash
+infraiq --help
+infraiq doctor
+infraiq info
+```
+
+---
+
+## Option 2: Binary Download
+
+Download a standalone executable with zero dependencies.
+
+### Download
+
+| Platform | Download |
+|----------|----------|
+| macOS (Apple Silicon) | [infraiq-macos-arm64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-arm64.tar.gz) |
+| macOS (Intel) | [infraiq-macos-x64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-x64.tar.gz) |
+| Linux (x64) | [infraiq-linux-x64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-linux-x64.tar.gz) |
+| Linux (ARM64) | [infraiq-linux-arm64.tar.gz](https://github.com/autonops/infraIQ/releases/latest/download/infraiq-linux-arm64.tar.gz) |
+
+### Install
+
+```bash
+# Example: macOS Apple Silicon
+curl -LO https://github.com/autonops/infraIQ/releases/latest/download/infraiq-macos-arm64.tar.gz
+tar -xzf infraiq-macos-arm64.tar.gz
+sudo mv infraiq /usr/local/bin/
+```
+
+### Verify Installation
+
+```bash
+infraiq --version
+infraiq --help
+```
+
+---
+
+## Option 3: Install Script
+
+For beta users, the install script automates setup.
+
+### Prerequisites
+
+- **Python 3.9+** — Check with `python3 --version`
+- **Git** — For cloning the repository
+
+### Install
+
+```bash
+curl -sSL https://install.autonops.io | bash
+```
+
+This script will:
+
+1. Check for Python 3.9+
+2. Clone the InfraIQ repository
+3. Set up a virtual environment
+4. Configure your PATH
+5. Download the telemetry daemon
+
+### Verify Installation
+
+```bash
+infraiq --version
+infraiq doctor
+infraiq info
+```
+
+Expected output from `infraiq info`:
+
+```
+🚀 InfraIQ Suite - Complete Infrastructure Management Platform
+============================================================
+
+📦 Available Tools:
+
+  VerifyIQ        ✅ Installed     - Infrastructure verification
+  CodifyIQ        ✅ Installed     - Infrastructure as Code
+  MigrateIQ       ✅ Installed     - Cloud migration
+  ComplyIQ        ✅ Installed     - Compliance automation
+  DataIQ          ✅ Installed     - Database migration
+  SecureIQ        ✅ Installed     - Secret management
+  Tessera         ✅ Installed     - Microservices transformation
+```
+
+---
+
+## Cloud Provider Setup
+
+InfraIQ works with multiple cloud providers. Configure the ones you need:
+
+### AWS
+
+```bash
+# Install AWS CLI
+brew install awscli  # macOS
+
+# Configure credentials
+aws configure
+```
+
+For Docker users, your `~/.aws` directory is automatically mounted read-only.
+
+### Heroku
+
+```bash
+# Install Heroku CLI
+brew tap heroku/brew && brew install heroku  # macOS
+
+# Login
+heroku login
+```
+
+### Google Cloud
+
+```bash
+# Install gcloud CLI
+brew install google-cloud-sdk  # macOS
+
+# Authenticate
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+```
+
+### Azure
+
+```bash
+# Install Azure CLI
+brew install azure-cli  # macOS
+
+# Login
+az login
+```
+
+---
+
+## Terraform Setup
+
+InfraIQ generates Terraform configurations. Install Terraform to apply them:
+
+```bash
+# macOS
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+
+# Verify
+terraform --version
+```
+
+---
+
+## Telemetry
+
+InfraIQ collects anonymous usage data to improve the product. No credentials, personal information, or infrastructure details are collected.
+
+To opt out:
+
+```bash
+export INFRAIQ_TELEMETRY=false
+```
+
+Or add to your shell profile (.bashrc`, `~/.zshrc`):
+
+```bash
+echo 'export INFRAIQ_TELEMETRY=false' >> ~/.zshrc
+```
+
+---
+
+## Troubleshooting
+
+### Docker: Permission Denied
+
+If you get permission errors with Docker:
+
+```bash
+# Ensure Docker daemon is running
+docker info
+
+# On Linux, add your user to the docker group
+sudo usermod -aG docker $USER
+# Then log out and back in
+```
+
+### Docker: AWS Credentials Not Found
+
+Ensure your `~/.aws` directory exists and contains valid credentials:
+
+```bash
+ls ~/.aws/credentials
+aws sts get-caller-identity  # Test credentials work
+```
+
+### Install Script: Python Version Issues
+
+If you see errors about Python version:
+
+```bash
+# Check your Python version
+python3 --version
+
+# If < 3.9, install a newer version
+brew install python@3.11  # macOS
+```
+
+### Command Not Found
+
+If `infraiq` command is not found after installation:
+
+```bash
+# For install script users, check your PATH
+echo $PATH | grep infraiq
+
+# Reload your shell config
+source ~/.zshrc
+```
+
+---
+
+## Next Steps
+
+- [Quick Start Guide](quickstart) — Your first migration in 5 minutes
+- [Configuration](configuration) — Customize InfraIQ settings
+- [Tools Overview](/docs/tools/overview) — Learn about all 7 tools

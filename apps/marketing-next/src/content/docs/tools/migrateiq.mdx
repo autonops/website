@@ -1,0 +1,171 @@
+# MigrateIQ
+
+Automated cloud-to-cloud migration.
+
+## Overview
+
+MigrateIQ automates the entire cloud migration lifecycle:
+
+- **Scans** existing infrastructure (Heroku, AWS, GCP, Azure)
+- **Maps** services intelligently to target cloud providers
+- **Generates** production-ready Terraform configurations
+- **Validates** migrations for security and compliance
+
+## Commands
+
+### Scan
+
+Discover your current infrastructure:
+
+```bash
+# Scan Heroku
+infraiq migrate scan heroku --app-name my-app --output scan.json
+
+# Scan AWS
+infraiq migrate scan aws --region us-east-1 --output scan.json
+
+# Include all apps in a Heroku team
+infraiq migrate scan heroku --team my-team --output scan.json
+```
+
+### Map
+
+Map source services to target provider:
+
+```bash
+# Map to AWS with defaults
+infraiq migrate map scan.json aws --output migration-plan.json
+
+# Use custom preferences
+infraiq migrate map scan.json aws \
+  --preferences high-availability.yaml \
+  --output migration-plan.json
+```
+
+### Generate
+
+Generate Terraform configurations:
+
+```bash
+infraiq migrate generate migration-plan.json --output ./terraform
+```
+
+Generated files include:
+
+- `main.tf` — Primary resources
+- `variables.tf` — Input variables  
+- `outputs.tf` — Output values
+- `vpc.tf` — Network configuration
+- `ecs.tf` — Container services
+- `rds.tf` — Database configuration
+- `secrets.tf` — Secret management
+
+## Service Mappings
+
+### Heroku to AWS
+
+| Heroku | AWS (Default) | AWS (High Availability) |
+|--------|---------------|------------------------|
+| Web Dyno | ECS Fargate | ECS Fargate + ALB |
+| Worker Dyno | ECS Task | ECS Task + SQS |
+| Postgres | RDS PostgreSQL | Aurora PostgreSQL |
+| Redis | ElastiCache | ElastiCache Multi-AZ |
+| Scheduler | EventBridge + Lambda | EventBridge + Lambda |
+| Papertrail | CloudWatch Logs | CloudWatch + OpenSearch |
+
+### Custom Mappings
+
+Create a preferences file:
+
+```yaml
+# high-availability.yaml
+mappings:
+  web_dyno:
+    service: ecs-fargate
+    config:
+      desired_count: 3
+      cpu: 512
+      memory: 1024
+      
+  postgres:
+    service: aurora-postgresql
+    config:
+      instance_class: db.r6g.large
+      multi_az: true
+      
+  redis:
+    service: elasticache
+    config:
+      node_type: cache.r6g.large
+      num_cache_nodes: 2
+```
+
+## Examples
+
+### Basic Migration
+
+```bash
+# 1. Scan Heroku app
+infraiq migrate scan heroku --app-name production-app
+
+# 2. Map to AWS
+infraiq migrate map scan.json aws
+
+# 3. Generate Terraform
+infraiq migrate generate migration-plan.json --output ./terraform
+
+# 4. Apply
+cd terraform
+terraform init
+terraform plan
+terraform apply
+```
+
+### Migration with Transformation
+
+Combine with Tessera for simultaneous modernization:
+
+```bash
+infraiq migrate-and-transform \
+  --heroku-app production \
+  --target aws \
+  --transform \
+  --output ./migration
+```
+
+## Best Practices
+
+1. **Scan first** — Always verify the scan output before mapping
+2. **Review mappings** — Check the migration plan before generating
+3. **Test in staging** — Deploy to a test environment first
+4. **Plan cutover** — Schedule a maintenance window
+5. **Validate after** — Use VerifyIQ to scan the new infrastructure
+
+## Troubleshooting
+
+### Heroku API Errors
+
+```bash
+# Ensure you're logged in
+heroku login
+
+# Check API access
+heroku apps
+```
+
+### Missing Environment Variables
+
+The scan captures env vars but not values. Update `terraform.tfvars`:
+
+```hcl
+environment_variables = {
+  DATABASE_URL = "postgres://..."
+  REDIS_URL    = "redis://..."
+}
+```
+
+## Next Steps
+
+- [Heroku to AWS Guide](/docs/guides/heroku-to-aws) — Complete walkthrough
+- [VerifyIQ](verifyiq) — Validate your migration
+- [DataIQ](dataiq) — Zero-downtime database migration

@@ -1,0 +1,75 @@
+# SOC2 Compliance Guide
+
+Automate SOC2 evidence collection with ComplyIQ.
+
+## Overview
+
+SOC2 (Service Organization Control 2) is a compliance framework for service providers. ComplyIQ automates evidence collection for:
+
+- **Security** — Protection against unauthorized access
+- **Availability** — System availability and uptime
+- **Processing Integrity** — Accurate and timely processing
+- **Confidentiality** — Protection of confidential information
+- **Privacy** — Personal information handling
+
+## Quick Start
+
+```bash
+# Run quick compliance check
+infraiq complyiq quickscan --framework soc2
+```
+
+## Full Evidence Collection
+
+```bash
+# Create evidence bucket
+aws s3 mb s3://my-company-soc2-evidence
+
+# Collect evidence
+infraiq complyiq scan \
+  --provider aws \
+  --framework soc2 \
+  --bucket my-company-soc2-evidence
+```
+
+## Evidence Categories
+
+### Access Control
+
+- IAM policies and roles
+- MFA configuration
+- Password policies
+- Access reviews
+
+### Encryption
+
+- Data at rest encryption
+- Data in transit (TLS)
+- Key management
+
+### Logging & Monitoring
+
+- CloudTrail configuration
+- CloudWatch alarms
+- Log retention policies
+
+### Network Security
+
+- VPC configuration
+- Security groups
+- Network ACLs
+
+## Audit Preparation
+
+```bash
+# Export evidence package
+infraiq complyiq export \
+  --bucket my-company-soc2-evidence \
+  --framework soc2 \
+  --output soc2-evidence-2025-Q1.zip
+```
+
+## Next Steps
+
+- [ComplyIQ](/docs/tools/complyiq) — Full documentation
+- [VerifyIQ](/docs/tools/verifyiq) — Security scanning

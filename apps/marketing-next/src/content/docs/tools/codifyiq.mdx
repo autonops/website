@@ -1,0 +1,85 @@
+# CodifyIQ
+
+Transform existing infrastructure into Infrastructure as Code.
+
+## Overview
+
+CodifyIQ converts manually-created cloud resources into Terraform:
+
+- **Discovers** resources created via console (ClickOps)
+- **Analyzes** dependencies between resources
+- **Generates** Terraform with import scripts
+- **Enables** GitOps without disruption
+
+## Commands
+
+### Scan
+
+```bash
+# Scan AWS
+infraiq codify scan aws --region us-east-1 -o scan.json
+
+# Scan multiple regions
+infraiq codify scan aws --region us-east-1,us-west-2 -o scan.json
+
+# Filter by resource type
+infraiq codify scan aws --types ec2,rds,s3 -o scan.json
+```
+
+### Analyze
+
+```bash
+# View discovered resources
+infraiq codify analyze scan.json
+
+# Show dependency graph
+infraiq codify analyze scan.json --show-dependencies
+```
+
+### Generate
+
+```bash
+# Generate Terraform
+infraiq codify generate scan.json --output ./terraform
+
+# Generate with import script
+infraiq codify generate scan.json --output ./terraform --include-import
+```
+
+## Workflow
+
+```bash
+# 1. Discover existing resources
+infraiq codify scan aws --region us-east-1 -o scan.json
+
+# 2. Review what was found
+infraiq codify analyze scan.json
+
+# 3. Generate Terraform
+infraiq codify generate scan.json --output ./terraform
+
+# 4. Import into state
+cd terraform
+./import.sh
+
+# 5. Verify no changes
+terraform plan  # Should show "No changes"
+```
+
+## Supported Resources
+
+### AWS
+
+- EC2 instances, ASGs, Launch Templates
+- VPCs, Subnets, Security Groups
+- RDS, Aurora, DynamoDB
+- S3 buckets
+- Lambda functions
+- ECS clusters and services
+- IAM roles and policies
+- And more...
+
+## Next Steps
+
+- [VerifyIQ](verifyiq) — Validate your IaC
+- [MigrateIQ](migrateiq) — Migrate to new infrastructure
