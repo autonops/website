@@ -20,7 +20,7 @@ import MonolithDecomposition from "@/content/docs/guides/monolith-decomposition.
 import CliReference from "@/content/docs/api/cli.mdx";
 import PythonApi from "@/content/docs/api/python.mdx";
 import Changelog from "@/content/docs/about/changelog.mdx";
-import Contributing from "@/content/docs/about/contributing.mdx";
+import Feedback from "@/content/docs/about/feedback.mdx";
 import License from "@/content/docs/about/license.mdx";
 
 // Docs home page component
@@ -250,10 +250,10 @@ const docs: Record<string, { component: React.ComponentType; title: string; desc
     title: "Changelog",
     description: "All notable changes to InfraIQ.",
   },
-  "about/contributing": {
-    component: Contributing,
-    title: "Contributing",
-    description: "How to contribute to InfraIQ.",
+  "about/feedback": {
+    component: Feedback,
+    title: "Feedback & Support",
+    description: "Get help, report bugs, and request features.",
   },
   "about/license": {
     component: License,

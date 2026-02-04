@@ -1,11 +1,15 @@
 export interface NavItem {
   title: string;
-  href?: string;
-  items?: NavItem[];
+  href: string;
   badge?: string;
 }
 
-export const docsNavigation: NavItem[] = [
+export interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+export const docsNavigation: NavSection[] = [
   {
     title: "Getting Started",
     items: [
@@ -47,7 +51,7 @@ export const docsNavigation: NavItem[] = [
     title: "About",
     items: [
       { title: "Changelog", href: "/docs/about/changelog" },
-      { title: "Contributing", href: "/docs/about/contributing" },
+      { title: "Feedback & Support", href: "/docs/about/feedback" },
       { title: "License", href: "/docs/about/license" },
     ],
   },
