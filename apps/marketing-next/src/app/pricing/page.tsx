@@ -109,7 +109,7 @@ export default function PricingPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Available Q2 2026</p>
               </div>
               <a 
-                href="mailto:jason@autonops.io?subject=Enterprise%20Inquiry" 
+                href="mailto:sales@autonops.io?subject=Enterprise%20Inquiry" 
                 className="block w-full text-center border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 py-3 rounded-lg font-semibold transition-colors mb-6"
               >
                 Contact Sales
@@ -125,8 +125,16 @@ export default function PricingPage() {
                 <li className="font-semibold text-sm pt-4">Enterprise Features</li>
                 <Feature>Kubernetes support</Feature>
                 <Feature>SSO / SAML</Feature>
-                <Feature>Priority support</Feature>
-                <Feature>Dedicated onboarding</Feature>
+                <Feature>Dedicated Slack channel support</Feature>
+                <Feature>Dedicated customer success manager</Feature>
+                <Feature>Dedicated onboarding & white-glove migration</Feature>
+                <Feature>Custom compliance frameworks (beyond SOC2/HIPAA)</Feature>
+                <Feature>Air-gapped / on-prem deployment option</Feature>
+                <Feature>Audit logs & activity reporting</Feature>
+                <Feature>Role-based access control (RBAC)</Feature>
+                <Feature>Custom integrations (CI/CD, ticketing, SIEM)</Feature>
+                <Feature>Multi-region / multi-cloud support</Feature>
+                <Feature>API access for custom automation</Feature>
               </ul>
             </div>
           </div>
