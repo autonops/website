@@ -196,7 +196,7 @@ export default function HomePage() {
               <p className="text-gray-500 dark:text-gray-500 text-sm mb-8">30-day free trial • No credit card required</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/start/" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white dark:text-black font-semibold rounded-lg transition-all hover:scale-105">Start Free Trial</Link>
-                <Link href="mailto:jason@autonops.io" className="px-8 py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-white dark:hover:bg-white/5 transition-colors">Schedule a Demo →</Link>
+                <Link href="mailto:sales@autonops.io" className="px-8 py-4 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-white dark:hover:bg-white/5 transition-colors">Schedule a Demo →</Link>
               </div>
             </div>
           </div>

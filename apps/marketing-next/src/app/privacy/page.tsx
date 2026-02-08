@@ -33,8 +33,8 @@ export default function PrivacyPage() {
           <h3 className="text-lg font-semibold mb-3 mt-6">License and Activation Data</h3>
           <p className="text-gray-600 dark:text-gray-300 mb-3">When you activate a license, we store a hashed installation identifier, your license tier, and activation timestamp. This is used solely to enforce license terms and track active installations.</p>
 
-          <h3 className="text-lg font-semibold mb-3 mt-6">Website Analytics</h3>
-          <p className="text-gray-600 dark:text-gray-300">Our website may collect standard analytics data such as pages visited, referral source, browser type, and approximate location. We do not use this data to personally identify visitors.</p>
+          <h3 className="text-lg font-semibold mb-3 mt-6">Website Analytics and Cookies</h3>
+          <p className="text-gray-600 dark:text-gray-300">We use Google Analytics to understand how visitors use our website. Google Analytics uses cookies (small text files stored on your device) to collect data such as pages visited, referral source, browser type, and approximate location. This data is aggregated and does not personally identify individual visitors. Analytics cookies are only placed after you provide consent via our cookie banner. You can decline cookies at any time, and the site will function normally without them.</p>
         </section>
 
         <section className="mb-10">
@@ -77,6 +77,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-bold mb-4">6. Third-Party Services</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-3">We use the following third-party services that may process your data:</p>
           <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2 ml-4">
+            <li><strong>Google Analytics</strong> — Website analytics (cookie-based, requires consent)</li>
             <li><strong>Stripe</strong> — Payment processing</li>
             <li><strong>Google Cloud Platform</strong> — Infrastructure hosting for our APIs and license server</li>
             <li><strong>Vercel</strong> — Dashboard and website hosting</li>
@@ -104,6 +105,7 @@ export default function PrivacyPage() {
             <li>Request deletion of your personal information</li>
             <li>Export your data in a portable format</li>
             <li>Opt out of telemetry data collection</li>
+            <li>Manage cookie preferences (accept or decline via the cookie banner, or clear cookies in your browser settings)</li>
           </ul>
           <p className="text-gray-600 dark:text-gray-300 mt-3">To exercise any of these rights, contact us at <a href="mailto:support@autonops.io" className="text-blue-500 hover:underline">support@autonops.io</a>. We will respond within 30 days.</p>
         </section>
