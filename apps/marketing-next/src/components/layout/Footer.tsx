@@ -15,9 +15,10 @@ export function Footer() {
         <div className="flex flex-wrap gap-6 text-sm">
           <Link href="/security/" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">Security</Link>
           <Link href="/privacy/" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">Privacy</Link>
+          <Link href="/terms/" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">Terms</Link>
           <a href="https://github.com/autonops/infraIQ" target="_blank" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">GitHub</a>
           <a href="https://linkedin.com/in/JasonBoykin2018" target="_blank" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">LinkedIn</a>
-          <a href="mailto:hello@autonops.io" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">Contact</a>
+          <a href="mailto:info@autonops.io" className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors">Contact</a>
         </div>
       </div>
     </footer>
